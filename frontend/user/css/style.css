@@ -1,0 +1,15 @@
+:root{
+  --primary:#ff7f50;   /* 主色：珊瑚渐变 */
+  --second :#6a5acd;   /* 辅色：紫 */
+  --dark  :#2c2c2c;    /* 背景深灰 */
+  --light :#f8f8f8;
+  --radius:12px;
+  --shadow:0 8px 20px rgba(0,0,0,.15);
+  --font  :'Poppins',sans-serif;
+}
+/* 小图统一高 */
+.card-img-top{height:160px;object-fit:cover;}
+/* 价格红色 */
+.price{color:#e4393c;font-size:1.25rem;}
+/* 购物车数量角标 */
+.badge-cart{position:absolute;top:2px;right:2px;font-size:0.6rem;}

@@ -1,0 +1,66 @@
+.card-item {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .1);
+    margin-bottom: 1rem;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.card-item img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.info {
+    flex: 1;
+}
+
+.info .name {
+    font-weight: 500;
+}
+
+.info .price {
+    color: #e4393c;
+    font-size: 1.1rem;
+}
+
+.qty-ctrl {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+.qty-ctrl button {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #ced4da;
+    background: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.qty-ctrl input {
+    width: 50px;
+    text-align: center;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+}
+
+.btn-remove {
+    background: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.total-bar {
+    text-align: right;
+    margin-top: 1rem;
+}

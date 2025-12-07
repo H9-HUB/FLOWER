@@ -74,3 +74,15 @@ CREATE TABLE login_log (
 -- 初始化两种分类
 INSERT INTO category (id,name) VALUES (1,'盆栽'),(2,'鲜切花');
 
+
+
+-- 商品
+INSERT INTO flower (id,category_id,name,title,price,stock,main_img,description,status) VALUES
+                                                                                           (1,1,'多肉盆栽','治愈系多肉',12.50,100,'/upload/duorou.jpg','非常容易养的多肉植物','ON_SALE'),
+                                                                                           (2,1,'仙人掌','桌面小仙人掌',9.90,150,'/upload/cactus.jpg','耐旱防辐射','ON_SALE'),
+                                                                                           (3,2,'香槟玫瑰','香槟色玫瑰 9 支',39.00,80,'/upload/champagne.jpg','厄瓜多尔玫瑰','ON_SALE'),
+                                                                                           (4,2,'向日葵','阳光向日葵 5 支',28.00,60,'/upload/sunflower.jpg','大花头','ON_SALE'),
+                                                                                           (5,1,'绿萝','室内净化绿萝',15.00,200,'/upload/lvluo.jpg','吊篮款','ON_SALE'),
+                                                                                           (6,2,'百合','香水百合 3 头',32.00,70,'/upload/lily.jpg','香味浓郁','ON_SALE'),
+                                                                                           (7,1,'虎皮兰','虎尾兰 吸甲醛',45.00,40,'/upload/hupilan.jpg','高大挺拔','ON_SALE'),
+                                                                                           (8,2,'康乃馨','粉色康乃馨 10 支',24.00,90,'/upload/carnation.jpg','母亲节首选','ON_SALE');

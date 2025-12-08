@@ -25,7 +25,8 @@ public class CartController {
     /** 加入购物车（需登录） */
     @PostMapping("/cart")
     public R<Void> add(@RequestBody AddCartDTO dto) {
-        Long userId = SecurityUtil.currentUserId();   // 工具类见下方
+        Long userId = SecurityUtil.currentUserId();
+        if(userId == null) return R.error("未登录");
         Flower flower = flowerService.getById(dto.getFlowerId());
         if (flower == null || !"ON_SALE".equals(flower.getStatus()))
             return R.error("商品不存在或已下架");
@@ -54,6 +55,7 @@ public class CartController {
     @GetMapping("/cart")
     public R<List<CartVO>> list() {
         Long userId = SecurityUtil.currentUserId();
+        if(userId == null) return R.error("未登录");
         List<CartVO> voList = cartService.lambdaQuery()
                 .eq(Cart::getUserId, userId)
                 .list()                       // List<Cart>
@@ -67,6 +69,7 @@ public class CartController {
     @DeleteMapping("/cart/{id}")
     public R<Void> del(@PathVariable Long id) {
         Long userId = SecurityUtil.currentUserId();
+        if(userId == null) return R.error("未登录");
         // 写法①：先查是否存在，再按主键删除（安全）
         boolean exist = cartService.lambdaQuery()
                 .eq(Cart::getId, id)

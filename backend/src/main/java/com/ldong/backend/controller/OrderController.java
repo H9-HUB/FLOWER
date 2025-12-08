@@ -38,6 +38,7 @@ public class OrderController {
     @PostMapping("/orders")
     public R<Map<String, Object>> create(@RequestBody CreateOrderDTO dto) {
         Long userId = SecurityUtil.currentUserId();
+        if(userId == null) return R.error("未登录");
         List<Cart> carts = cartService.lambdaQuery().eq(Cart::getUserId, userId).list();
         if (carts.isEmpty()) return R.error("购物车为空");
 
@@ -85,6 +86,7 @@ public class OrderController {
     @GetMapping("/orders")
     public R<List<OrderVO>> myOrders() {
         Long userId = SecurityUtil.currentUserId();
+        if(userId == null) return R.error("未登录");
         List<Order> orders = orderService.lambdaQuery().eq(Order::getUserId, userId).orderByDesc(Order::getId).list();
         List<OrderVO> vo = orders.stream().map(this::toVO).collect(Collectors.toList());
         return R.ok(vo);
@@ -93,6 +95,7 @@ public class OrderController {
     @PostMapping("/orders/{id}/pay")
     public R<Void> pay(@PathVariable Long id) {
         Long userId = SecurityUtil.currentUserId();
+        if(userId == null) return R.error("未登录");
         Order order = orderService.getById(id);
         if (order == null || !"UNPAID".equals(order.getStatus())) return R.error("订单状态异常");
         order.setStatus("PAID");
@@ -104,6 +107,7 @@ public class OrderController {
     @PutMapping("/orders/{id}/cancel")
     public R<Void> cancel(@PathVariable Long id) {
         Long userId = SecurityUtil.currentUserId();
+        if(userId == null) return R.error("未登录");
         Order order = orderService.getById(id);
         if (order == null || !"UNPAID".equals(order.getStatus())) return R.error("只能取消未支付订单");
         order.setStatus("CANCELLED");

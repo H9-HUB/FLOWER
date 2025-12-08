@@ -1,15 +1,207 @@
-:root{
-  --primary:#ff7f50;   /* 主色：珊瑚渐变 */
-  --second :#6a5acd;   /* 辅色：紫 */
-  --dark  :#2c2c2c;    /* 背景深灰 */
-  --light :#f8f8f8;
-  --radius:12px;
-  --shadow:0 8px 20px rgba(0,0,0,.15);
-  --font  :'Poppins',sans-serif;
+:root {
+  --primary: #ff7f50;
+  /* 主色：珊瑚渐变 */
+  --second: #6a5acd;
+  /* 辅色：紫 */
+  --dark: #2c2c2c;
+  /* 背景深灰 */
+  --light: #f8f8f8;
+  --radius: 12px;
+  --shadow: 0 8px 20px rgba(0, 0, 0, .15);
+  --font: 'Poppins', sans-serif;
 }
+
 /* 小图统一高 */
-.card-img-top{height:160px;object-fit:cover;}
+.card-img-top {
+  height: 160px;
+  object-fit: cover;
+}
+
 /* 价格红色 */
-.price{color:#e4393c;font-size:1.25rem;}
+.price {
+  color: #e4393c;
+  font-size: 1.25rem;
+}
+
 /* 购物车数量角标 */
-.badge-cart{position:absolute;top:2px;right:2px;font-size:0.6rem;}
+.badge-cart {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  font-size: 0.6rem;
+}
+
+/* 统一导航（不依赖 Bootstrap） */
+.app-navbar {
+  position: sticky;
+  top: 0;
+  background: #fff;
+  box-shadow: var(--shadow);
+  z-index: 1000;
+}
+
+.app-nav-wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  font-family: var(--font);
+}
+
+.app-logo {
+  font-weight: 700;
+  color: var(--primary);
+  text-decoration: none;
+  font-size: 1.2rem
+}
+
+.app-links {
+  display: flex;
+  align-items: center;
+  gap: 14px
+}
+
+.app-link {
+  color: #333;
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 8px
+}
+
+.app-link:hover {
+  background: #f3f3f3
+}
+
+.app-link.active {
+  color: #fff;
+  background: linear-gradient(135deg, var(--primary), var(--second))
+}
+
+.app-cta {
+  background: linear-gradient(135deg, var(--primary), var(--second));
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 20px;
+  text-decoration: none
+}
+
+.app-badge {
+  display: inline-grid;
+  place-items: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 9px;
+  background: #e74c3c;
+  color: #fff;
+  font-size: 12px;
+  line-height: 1;
+  margin-left: 6px
+}
+
+/* 统一按钮 */
+.btn-gradient {
+  background: linear-gradient(135deg, var(--primary), var(--second));
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: .25s;
+  box-shadow: var(--shadow)
+}
+
+.btn-gradient:hover {
+  transform: translateY(-2px)
+}
+
+.btn-outline {
+  background: #fff;
+  color: var(--second);
+  border: 1px solid var(--second);
+  padding: 8px 16px;
+  border-radius: 18px;
+  cursor: pointer;
+  transition: .25s
+}
+
+.btn-outline:hover {
+  background: var(--second);
+  color: #fff
+}
+
+.btn-detail {
+  background: linear-gradient(135deg, var(--primary), var(--second));
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: .25s
+}
+
+.btn-detail:hover {
+  transform: translateY(-2px)
+}
+
+/* 统一卡片 */
+.card {
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden
+}
+
+.card-body {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column
+}
+
+.card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: .5rem
+}
+
+.card-text {
+  font-size: .9rem;
+  color: #777;
+  flex-grow: 1
+}
+
+/* 个人中心快捷入口 */
+.app-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
+  margin-top: 16px
+}
+
+.app-tile {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  padding: 16px;
+  text-decoration: none;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: .25s
+}
+
+.app-tile:hover {
+  transform: translateY(-2px)
+}
+
+.app-tile .t-title {
+  font-weight: 600
+}
+
+.app-tile .t-desc {
+  font-size: .88rem;
+  color: #666
+}

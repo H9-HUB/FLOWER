@@ -20,6 +20,7 @@ function changeQty(d){
   ipt.value = v;
 }
 async function addCart(){
+  if(!requireAuth({message:'请先登录后加入购物车'})) return;
   const qty = parseInt(document.getElementById('qty').value);
   const res = await httpPost('/api/cart', {flowerId: id, quantity: qty});
   if(res.code === 200){ alert('已加入购物车！'); updateCartCount(); }

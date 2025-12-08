@@ -23,7 +23,7 @@ public class FlowerController {
      */
     @GetMapping("/flowers")
     public R<IPage<Flower>> list(@RequestParam(defaultValue = "1") Integer page,
-                                 @RequestParam(defaultValue = "12") Integer size,
+                                 @RequestParam(defaultValue = "15") Integer size,
                                  @RequestParam(required = false) Integer categoryId) {
         IPage<Flower> iPage = flowerService.lambdaQuery()
                 .eq(categoryId != null, Flower::getCategoryId, categoryId)

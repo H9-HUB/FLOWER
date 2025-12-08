@@ -85,4 +85,33 @@ INSERT INTO flower (id,category_id,name,title,price,stock,main_img,description,s
                                                                                            (5,1,'绿萝','室内净化绿萝',15.00,200,'/upload/lvluo.jpg','吊篮款','ON_SALE'),
                                                                                            (6,2,'百合','香水百合 3 头',32.00,70,'/upload/lily.jpg','香味浓郁','ON_SALE'),
                                                                                            (7,1,'虎皮兰','虎尾兰 吸甲醛',45.00,40,'/upload/hupilan.jpg','高大挺拔','ON_SALE'),
-                                                                                           (8,2,'康乃馨','粉色康乃馨 10 支',24.00,90,'/upload/carnation.jpg','母亲节首选','ON_SALE');
+                                                                                           (8,2,'康乃馨','粉色康乃馨 10 支',24.00,90,'/upload/carnation.jpg','母亲节首选','ON_SALE'),
+                                                                                           (9 ,1,'绿萝盆栽','桌面净化绿萝 带吊篮',18.50,200,'/upload/luoluo.jpg','耐阴、易养、净化空气','ON_SALE'),
+                                                                                           (10,1,'仙人掌组合','3 盆组合装 多肉仙人掌',25.00,150,'/upload/cactus_combo.jpg','防辐射、耐旱','ON_SALE'),
+                                                                                           (11,1,'多肉拼盘','6 株随机混色多肉',32.00,120,'/upload/duorou_plate.jpg','治愈系、易养活','ON_SALE'),
+                                                                                           (12,1,'袖珍椰子','桌面小椰苗 净化空气',28.00,90,'/upload/yezi.jpg','热带风情、耐阴','ON_SALE'),
+                                                                                           (13,1,'发财树','小辫发财树 招财寓意',38.00,70,'/upload/facai.jpg','象征招财、耐阴','ON_SALE'),
+                                                                                           (14,1,'文竹','迷你文竹 书香气息',22.00,110,'/upload/wenzhu.jpg','文雅、易养','ON_SALE'),
+                                                                                           (15,1,'豆瓣绿','圆叶豆瓣绿 小型盆栽',16.50,160,'/upload/douban.jpg','圆叶可爱、耐阴','ON_SALE'),
+                                                                                           (16,1,'白掌','一帆风顺 开花盆栽',29.90,85,'/upload/baizhang.jpg','白花雅致、耐阴','ON_SALE'),
+                                                                                           (17,2,'红玫瑰','红玫瑰 9 支装',42.00,100,'/upload/redrose.jpg','爱情玫瑰、大花头','ON_SALE'),
+                                                                                           (18,2,'白玫瑰','白玫瑰 9 支装',42.00,90,'/upload/whiterose.jpg','纯洁玫瑰、大花头','ON_SALE'),
+                                                                                           (19,2,'蓝玫瑰','蓝色妖姬 9 支装',68.00,60,'/upload/bluerose.jpg','染色蓝玫瑰、神秘','ON_SALE'),
+                                                                                           (20,2,'洋桔梗','洋桔梗 10 支',35.00,95,'/upload/jiegeng.jpg','雾感花瓣、高雅','ON_SALE'),
+                                                                                           (21,2,'满天星','白色满天星 一大束',26.00,110,'/upload/star.jpg','雾状小花、配草','ON_SALE');
+
+-- 收货地址表
+CREATE TABLE address (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    name VARCHAR(20) NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    province VARCHAR(50) NOT NULL,
+    city VARCHAR(50) NOT NULL,
+    district VARCHAR(50) NOT NULL,
+    detail VARCHAR(200) NOT NULL,
+    is_default TINYINT(1) DEFAULT 0,
+    create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_user (user_id),
+    FOREIGN KEY (user_id) REFERENCES user(id)
+);

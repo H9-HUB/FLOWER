@@ -1,0 +1,46 @@
+<!-- 个人中心 -->
+<!doctype html>
+<html lang="zh">
+
+<head>
+    <meta charset="utf-8">
+    <title>个人中心</title>
+    <link href="css/style.css" rel="stylesheet">
+    <link href="https://cdn.staticfile.net/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- 统一导航由 js/common.js 注入 -->
+    <div class="container mt-4">
+        <h5>个人中心</h5>
+        <div class="card p-3">
+            <p>手机号：<span id="phone" class="text-muted"></span></p>
+        </div>
+
+        <h6 class="mt-4">快捷入口</h6>
+        <div class="app-grid">
+            <a class="app-tile" href="orders.html">
+                <div class="t-title">我的订单</div>
+                <div class="t-desc">查看全部订单、支付和取消</div>
+            </a>
+            <a class="app-tile" href="address.html">
+                <div class="t-title">收货地址</div>
+                <div class="t-desc">管理常用地址，轻松下单</div>
+            </a>
+            <a class="app-tile" href="cart.html">
+                <div class="t-title">购物车</div>
+                <div class="t-desc">继续挑选心仪花品</div>
+            </a>
+            <a class="app-tile" href="mailto:support@floraldreams.local">
+                <div class="t-title">联系客服</div>
+                <div class="t-desc">问题反馈与售后支持</div>
+            </a>
+        </div>
+    </div>
+    <script src="js/common.js"></script>
+    <script>
+        document.getElementById('phone').textContent = localStorage.getItem('phone') || '-';
+    </script>
+</body>
+
+</html>

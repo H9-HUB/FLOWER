@@ -1,4 +1,4 @@
-let current = 1, categoryId = null, size = 12;
+let current = 1, categoryId = null, size = 15;
 init();
 function init(){ loadList(); updateCartCount(); }
 async function loadList(cat = null, page = 1){
@@ -31,6 +31,7 @@ function renderPage(p){
 }
 function go(url){location.href = url;}
 async function updateCartCount(){
+  if(!isAuthed()) return; // 未登录不请求购物车接口
   const res = await httpGet('/api/cart');
   if(res.code === 200) document.getElementById('badge').textContent = res.data.length;
 }

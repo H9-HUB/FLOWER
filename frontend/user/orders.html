@@ -1,0 +1,70 @@
+<!-- 订单列表 -->
+<!doctype html>
+<html lang="zh">
+
+<head>
+    <meta charset="utf-8">
+    <title>我的订单</title>
+    <link href="css/style.css" rel="stylesheet">
+    <link href="https://cdn.staticfile.net/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .status-unpaid {
+            color: #ff7f50
+        }
+
+        .status-paid {
+            color: #28a745
+        }
+
+        .status-cancelled {
+            color: #6c757d
+        }
+
+        .card-order {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, .1);
+            margin-bottom: 1rem;
+            padding: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 统一导航由 js/common.js 注入 -->
+    <div class="container mt-4">
+        <h5>我的订单</h5>
+        <div id="list"></div>
+    </div>
+    <script src="js/common.js"></script>
+    <script>
+        init();
+        async function init() {
+            const res = await httpGet('/api/orders');
+            if (res.code !== 200) { renderOrders([]); return; }
+            renderOrders(res.data);
+        }
+        function renderOrders(list) {
+                        if(!list || list.length===0){
+                            document.getElementById('list').innerHTML = '<div class="text-muted">空空如也，快去下单吧~</div>';
+                            return;
+                        }
+                        const html = list.map(o => `
+    <div class="card-order">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <div>订单号：${o.sn}</div>
+          <div class="mt-1">金额：<span class="text-danger">¥${o.totalAmount.toFixed(2)}</span></div>
+          <div class="mt-1">状态：<span class="status-${o.status.toLowerCase()}">${o.status}</span></div>
+        </div>
+        <div>
+          ${o.status === 'UNPAID' ? `<button class="btn btn-sm btn-primary" onclick="location.href='order.html?id=${o.orderId}'">去支付</button>` : ''}
+        </div>
+      </div>
+    </div>`).join('');
+            document.getElementById('list').innerHTML = html;
+        }
+    </script>
+</body>
+
+</html>

@@ -22,11 +22,20 @@ public class FlowerController {
      *      categoryId 分类筛选（可选）
      */
     @GetMapping("/flowers")
-    public R<IPage<Flower>> list(@RequestParam(defaultValue = "1") Integer page,
-                                 @RequestParam(defaultValue = "15") Integer size,
-                                 @RequestParam(required = false) Integer categoryId) {
-        IPage<Flower> iPage = flowerService.lambdaQuery()
+            public R<IPage<Flower>> list(@RequestParam(defaultValue = "1") Integer page,
+                         @RequestParam(defaultValue = "15") Integer size,
+                         @RequestParam(required = false) Integer categoryId,
+                         @RequestParam(required = false) String keyword) {
+            String kw = (keyword == null) ? null : keyword.trim();
+            boolean hasKw = kw != null && !kw.isEmpty();
+            IPage<Flower> iPage = flowerService.lambdaQuery()
                 .eq(categoryId != null, Flower::getCategoryId, categoryId)
+                .and(hasKw, w -> w
+                    .like(Flower::getTitle, kw)
+                    .or()
+                    .like(Flower::getDescription, kw)
+                    .or()
+                    .like(Flower::getName, kw))
                 .eq(Flower::getStatus, "ON_SALE")          // 只显示上架
                 .orderByDesc(Flower::getId)                // 最新在前
                 .page(new Page<>(page, size));

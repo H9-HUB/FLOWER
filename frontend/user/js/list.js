@@ -1,9 +1,14 @@
-let current = 1, categoryId = null, size = 15;
+let current = 1, categoryId = null, size = 15, keyword = '';
 init();
-function init(){ loadList(); updateCartCount(); }
+function init(){
+  const sp = new URLSearchParams(location.search);
+  keyword = sp.get('q') || '';
+  loadList(); updateCartCount();
+}
 async function loadList(cat = null, page = 1){
   categoryId = cat; current = page;
-  const url = `/api/flowers?page=${page}&size=${size}` + (cat ? `&categoryId=${cat}` : '');
+  let url = `/api/flowers?page=${page}&size=${size}` + (cat ? `&categoryId=${cat}` : '');
+  if(keyword) url += `&keyword=${encodeURIComponent(keyword)}`;
   const res = await httpGet(url);
   if(res.code === 200){ renderGrid(res.data.records); renderPage(res.data); }
 }

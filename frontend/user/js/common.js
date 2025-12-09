@@ -111,10 +111,21 @@ async function updateCartCount() {
 // 统一导航渲染
 function isAuthed() { return !!localStorage.getItem('token'); }
 function requireAuth(opts = {}) {
-  const { redirect = true, message = '请先登录以查看此页面' } = opts;
+  const { redirect = true, message = '请先登录以查看此页面', waitConfirm = false } = opts;
   if (!isAuthed()) {
-    showAlert(message);
-    if (redirect) location.href = 'login.html';
+    // 可配置：等待确认再跳转，或自动提示后直接跳转
+    if (waitConfirm) {
+      showAlert(message || '请先登录', {
+        title: 'Floral Notice',
+        okText: '去登陆',
+        type: 'success',
+        variant: 'auth',
+        onOk: () => { if (redirect) location.href = 'login.html'; }
+      });
+    } else {
+      if (message) { try { showAlert(message, { title: 'Floral Notice', okText: '去登陆', type: 'success', variant: 'auth', duration: 1200 }); } catch {} }
+      if (redirect) setTimeout(() => { location.href = 'login.html'; }, 0);
+    }
     return false;
   }
   return true;
@@ -142,8 +153,9 @@ function renderNavbar() {
   const linkHtml = links.map(l => {
     const active = l.key === activeKey ? ' active' : '';
     const cartBadge = l.badge ? '<span id="badge" class="app-badge" style="display:none">0</span>' : '';
-    const ordersBadge = l.ordersBadge ? '<span id="ordersBadge" class="app-badge">0</span>' : '';
-    return `<a class="app-link${active}" href="${l.href}">${l.text}${cartBadge || ordersBadge}</a>`;
+    // 初始隐藏订单角标，避免无未支付订单时闪烁 0
+    const ordersBadge = l.ordersBadge ? '<span id="ordersBadge" class="app-badge" style="display:none"></span>' : '';
+    return `<a class="app-link${active}" href="${l.href}" data-key="${l.key}">${l.text}${cartBadge || ordersBadge}</a>`;
   }).join('');
 
   const authHtml = isAuthed()
@@ -192,6 +204,43 @@ function renderNavbar() {
       location.href = url;
     });
   }
+
+  // 未登录点击购物车时，先提示并在确认后跳转登录
+  const cartLink = nav.querySelector('a[data-key="cart"]');
+  if (cartLink) {
+    cartLink.addEventListener('click', (e) => {
+      if (!isAuthed()) {
+        e.preventDefault();
+        showAlert('请先登录后查看购物车', {
+          title: 'Floral Notice',
+          okText: '去登陆',
+          type: 'success',
+          variant: 'auth',
+          onOk: () => { location.href = 'login.html'; }
+        });
+      }
+    });
+  }
+
+  // 未登录点击订单/我的链接时，提示并确认后跳转登录
+  ['orders', 'profile'].forEach(key => {
+    const link = nav.querySelector(`a[data-key="${key}"]`);
+    if (link) {
+      link.addEventListener('click', (e) => {
+        if (!isAuthed()) {
+          e.preventDefault();
+          const msg = key === 'orders' ? '请先登录后查看订单' : '请先登录后查看个人信息';
+          showAlert(msg, {
+            title: 'Floral Notice',
+            okText: '去登陆',
+            type: 'success',
+            variant: 'auth',
+            onOk: () => { location.href = 'login.html'; }
+          });
+        }
+      });
+    }
+  });
 }
 
 document.addEventListener('DOMContentLoaded', renderNavbar);
@@ -218,20 +267,21 @@ async function updateUnpaidOrdersBadge() {
 
 // 统一居中弹窗提示
 function showAlert(message, opts = {}){
-  const { title = '提示', okText = '知道了', type = 'info', duration = 0, onOk } = opts;
+  const { title = '提示', okText = '知道了', type = 'info', duration = 0, onOk, variant } = opts;
   let wrap = document.getElementById('appAlertWrap');
   if(!wrap){
     wrap = document.createElement('div');
     wrap.id = 'appAlertWrap';
     document.body.appendChild(wrap);
   }
+  const variantClass = variant ? ` app-${variant}` : '';
   wrap.innerHTML = `
-    <div class="app-alert-mask" style="position:fixed;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;z-index:1050">
-      <div class="app-alert-box" style="background:#fff;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.15);max-width:420px;width:90%;padding:16px 20px;border-left:6px solid ${typeColor(type)};">
-        <div class="app-alert-title" style="font-weight:600;margin-bottom:8px;">${title}</div>
-        <div class="app-alert-msg" style="color:#555;word-break:break-word;margin-bottom:12px;">${escapeHtml(String(message||''))}</div>
-        <div class="text-end">
-          <button id="appAlertOk" class="btn btn-primary btn-sm">${okText}</button>
+    <div class="app-alert-mask">
+      <div class="app-alert-box${variantClass}" style="border-top:4px solid ${typeColor(type)};">
+        <div class="app-alert-title"><img class="app-alert-icon" src="upload/logo.png" alt=""/>${title}</div>
+        <div class="app-alert-msg">${escapeHtml(String(message||''))}</div>
+        <div class="app-alert-actions">
+          <button id="appAlertOk" class="app-btn app-btn-primary app-btn-sm">${okText}</button>
         </div>
       </div>
     </div>`;
@@ -250,13 +300,13 @@ function showConfirm(message, opts = {}){
     document.body.appendChild(wrap);
   }
   wrap.innerHTML = `
-    <div class="app-alert-mask" style="position:fixed;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;z-index:1050">
-      <div class="app-alert-box" style="background:#fff;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.15);max-width:420px;width:90%;padding:16px 20px;">
-        <div class="app-alert-title" style="font-weight:600;margin-bottom:8px;">${title}</div>
-        <div class="app-alert-msg" style="color:#555;word-break:break-word;margin-bottom:12px;">${escapeHtml(String(message||''))}</div>
-        <div class="text-end" style="display:flex;gap:8px;justify-content:flex-end;">
-          <button id="appConfirmCancel" class="btn btn-outline-secondary btn-sm">${cancelText}</button>
-          <button id="appConfirmOk" class="btn btn-primary btn-sm">${okText}</button>
+    <div class="app-alert-mask">
+      <div class="app-alert-box" style="border-top:4px solid var(--primary,#ff7f50);">
+        <div class="app-alert-title"><img class="app-alert-icon" src="upload/logo.png" alt=""/>${title}</div>
+        <div class="app-alert-msg">${escapeHtml(String(message||''))}</div>
+        <div class="app-alert-actions">
+          <button id="appConfirmCancel" class="app-btn app-btn-outline app-btn-sm">${cancelText}</button>
+          <button id="appConfirmOk" class="app-btn app-btn-primary app-btn-sm">${okText}</button>
         </div>
       </div>
     </div>`;

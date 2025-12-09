@@ -88,7 +88,7 @@ async function delItem(id){
 }
 async function createOrder(){
   // 直接创建订单（地址可后续在支付页选择/更新）
-  if(!requireAuth({message:'请先登录后进行结算'})) return;
+  if(!requireAuth({message:'请先登录后进行结算', waitConfirm: true})) return;
   const res = await httpPost('/api/orders', {});
   if(res.code === 200){
     const orderId = res.data?.orderId;

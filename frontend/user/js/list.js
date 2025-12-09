@@ -3,7 +3,11 @@ init();
 function init(){
   const sp = new URLSearchParams(location.search);
   keyword = sp.get('q') || '';
-  loadList(); updateCartCount();
+  loadList();
+  // 使用公共的购物车角标更新逻辑，确保显示/隐藏正确
+  if (typeof window.updateCartCount === 'function') {
+    window.updateCartCount();
+  }
 }
 async function loadList(cat = null, page = 1){
   categoryId = cat; current = page;
@@ -35,8 +39,3 @@ function renderPage(p){
   document.getElementById('pagination').innerHTML = h;
 }
 function go(url){location.href = url;}
-async function updateCartCount(){
-  if(!isAuthed()) return; // 未登录不请求购物车接口
-  const res = await httpGet('/api/cart');
-  if(res.code === 200) document.getElementById('badge').textContent = res.data.length;
-}

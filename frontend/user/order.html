@@ -37,10 +37,13 @@
             font-size: 1.5rem;
             color: var(--primary);
         }
+
+        /* 支付二维码样式 */
+        .pay-qr { max-width: 260px; width: 100%; border-radius: 12px; box-shadow: 0 10px 24px rgba(0,0,0,.1); }
     </style>
 </head>
 
-<body>
+<body class="page-order">
     <!-- 统一导航由 js/common.js 注入 -->
 
     <div class="container">
@@ -89,7 +92,7 @@
 
         <!-- 取消原因填写弹窗 -->
         <div class="modal" tabindex="-1" id="cancelModal">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">填写取消原因</h5>
@@ -106,6 +109,25 @@
 
                 <!-- 引入 Bootstrap JS（本地文件，避免外网超时） -->
                 <script src="js/bootstrap.bundle.min.js"></script>
+            </div>
+        </div>
+
+        <!-- 支付二维码弹窗 -->
+        <div class="modal" tabindex="-1" id="payModal">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">扫码支付</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <img src="upload/ma.png" alt="支付二维码" class="pay-qr">
+                    </div>
+                    <div class="modal-footer d-flex justify-content-between">
+                        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">取消</button>
+                        <button class="btn btn-success" id="payConfirmBtn">确认支付</button>
+                    </div>
+                </div>
             </div>
         </div>
 

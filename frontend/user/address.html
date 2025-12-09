@@ -12,18 +12,46 @@
     /* 使用统一按钮样式，避免与其他界面不一致 */
   </style>
 </head>
-<body>
+<body class="page-address">
   <!-- 统一导航由 js/common.js 注入 -->
-  <div class="container mt-4">
-    <div class="d-flex align-items-center justify-content-between">
-      <h5 class="m-0">收货地址</h5>
-      <button class="btn btn-primary" onclick="openAddrForm()">新增地址</button>
+  <div class="address-shell container py-4">
+    <div class="glass addr-hero">
+      <div class="addr-meta">
+        <div class="addr-kicker">Address Book</div>
+        <h4 class="addr-title">收货地址</h4>
+        <p class="addr-desc">为花束找到最精准的落脚点，常用地址提前维护更省心。</p>
+        <div class="addr-pills">
+          <span class="addr-pill">共 <span id="addrCount">0</span> 条</span>
+          <span class="addr-pill soft" id="defaultStatus">默认地址未设置</span>
+        </div>
+      </div>
+      <div class="addr-hero-actions">
+        <button class="pill-btn primary" onclick="openAddrForm()">新增地址</button>
+        <button class="pill-btn ghost" onclick="init()">刷新列表</button>
+      </div>
     </div>
 
-    <div id="addrList" class="mt-3"></div>
+    <div id="empty" class="empty-state glass mt-3" style="display:none;">
+      <div class="empty-title">还没有地址</div>
+      <p class="empty-text">添加常用收货地址，让每次下单都一键填充。</p>
+      <button class="pill-btn primary" onclick="openAddrForm()">立即新增</button>
+    </div>
 
-    <div id="empty" class="empty mt-3" style="display:none;">
-      还没有地址，点击“新增地址”进行添加。
+    <div id="addrList" class="addr-grid mt-3"></div>
+
+    <div class="glass addr-tips mt-3">
+      <div class="tip">
+        <div class="tip-title">保持手机号畅通</div>
+        <p class="tip-text">配送前可能有确认电话，确保号码正确且可接听。</p>
+      </div>
+      <div class="tip">
+        <div class="tip-title">填写清晰地址</div>
+        <p class="tip-text">楼栋、门牌、单元号越详细，花艺师送达越快。</p>
+      </div>
+      <div class="tip">
+        <div class="tip-title">默认地址优先使用</div>
+        <p class="tip-text">设置默认地址，下单时自动填充，省时又省心。</p>
+      </div>
     </div>
   </div>
 
@@ -99,6 +127,7 @@
     }
     function render(list){
       const box = document.getElementById('addrList');
+      updateStats(list || []);
       if(!list || list.length===0){
         box.innerHTML = '';
         document.getElementById('empty').style.display = '';
@@ -106,12 +135,24 @@
       }
       document.getElementById('empty').style.display = 'none';
       box.innerHTML = list.map(a=>`
-        <div class="card addr-card">
-          <div><strong>${a.name}</strong> ${a.phone}</div>
-          <div class="text-muted mt-1">${a.province}${a.city}${a.district}${a.detail} ${a.isDefault===1?'<span class="badge bg-success">默认</span>':''}</div>
-          <div class="mt-2">
-            <button class="btn btn-outline-secondary btn-sm" onclick="openAddrForm(${a.id})">编辑</button>
-            <button class="btn btn-outline-danger btn-sm" onclick="delAddress(${a.id})">删除</button>
+        <div class="addr-card glass">
+          <div class="addr-card-head">
+            <div>
+              <div class="addr-name">${a.name}${a.isDefault===1?'<span class="addr-chip">默认</span>':''}</div>
+              <div class="addr-phone">${a.phone}</div>
+            </div>
+            <div class="addr-actions">
+              <button class="btn btn-sm btn-outline-success" onclick="openAddrForm(${a.id})">编辑</button>
+              <button class="btn btn-sm btn-outline-danger" onclick="delAddress(${a.id})">删除</button>
+            </div>
+          </div>
+          <div class="addr-line">${a.province}${a.city}${a.district}${a.detail}</div>
+          <div class="addr-foot">
+            <label class="addr-toggle">
+              <input type="checkbox" ${a.isDefault===1?'checked':''} onchange="setDefault(${a.id})">
+              <div class="checkmark"></div>
+              <span>默认地址</span>
+            </label>
           </div>
         </div>
       `).join('');
@@ -154,9 +195,51 @@
       else { showAlert(res.msg||'保存失败'); }
     }
     async function delAddress(id){
-      if(!confirm('确定删除该地址吗？')) return;
+      const ok = await confirmDelete();
+      if(!ok) return;
       const res = await httpDelete('/api/addresses/'+id);
       if(res.code===200){ init(); } else { showAlert(res.msg||'删除失败'); }
+    }
+
+    function updateStats(list){
+      const countEl = document.getElementById('addrCount');
+      const defaultEl = document.getElementById('defaultStatus');
+      if(countEl) countEl.textContent = list.length || 0;
+      if(defaultEl){
+        const def = list.find(x=>x.isDefault===1);
+        defaultEl.textContent = def ? `默认：${def.name}` : '默认地址未设置';
+        defaultEl.classList.toggle('on', !!def);
+      }
+    }
+
+    function confirmDelete(){
+      return new Promise(resolve=>{
+        showConfirm('确定删除该地址吗？', {
+          title:'删除地址', okText:'删除', cancelText:'保留',
+          onOk:()=>resolve(true), onCancel:()=>resolve(false)
+        });
+      });
+    }
+
+    async function setDefault(id){
+      const target = addrCache.find(x=>x.id===id);
+      if(!target) return;
+      if(target.isDefault===1) return; // 已是默认，无需重复请求
+      const payload = {
+        name: target.name,
+        phone: target.phone,
+        province: target.province,
+        city: target.city,
+        district: target.district,
+        detail: target.detail,
+        isDefault: true
+      };
+      const res = await httpPut('/api/addresses/'+id, payload);
+      if(res.code===200){
+        init();
+      }else{
+        showAlert(res.msg||'设置默认地址失败');
+      }
     }
 
     async function httpPut(url, data){

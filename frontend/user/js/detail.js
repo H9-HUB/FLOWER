@@ -20,7 +20,7 @@ function changeQty(d){
   ipt.value = v;
 }
 async function addCart(){
-  if(!requireAuth({message:'请先登录后加入购物车'})) return;
+  if(!requireAuth({message:'请先登录后加入购物车', waitConfirm: true})) return;
   const qty = parseInt(document.getElementById('qty').value);
   const res = await httpPost('/api/cart', {flowerId: id, quantity: qty});
   if(res.code === 200){ showAlert('已加入购物车！'); updateCartCount(); }
@@ -29,7 +29,7 @@ async function addCart(){
 
 // 立即购买：将所选商品加入购物车后直接创建订单并跳转到支付页
 async function buyNow(){
-  if(!requireAuth({message:'请先登录后购买'})) return;
+  if(!requireAuth({message:'请先登录后购买', waitConfirm: true})) return;
   const qty = parseInt(document.getElementById('qty').value);
   // 先确保加入购物车（若已在购物车则为增量）
   const addRes = await httpPost('/api/cart', {flowerId: id, quantity: qty});

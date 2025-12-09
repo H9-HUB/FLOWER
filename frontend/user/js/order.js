@@ -56,18 +56,58 @@ const id = new URLSearchParams(location.search).get('id');
             }).join('');
         }
 
+        let _cancelModal, _payModal;
+
         async function pay() {
             // 支付前前端校验：必须有收货地址
             if (!order.addressId) {
                 showAlert('请先填写并选择收货地址');
                 return;
             }
-            if (!confirm('确认支付？')) return;
-            const res = await httpPost('/api/orders/' + order.orderId + '/pay', {});
-            if (res.code === 200) { showAlert('支付成功！'); location.href = 'orders.html'; }
-            else showAlert(res.msg||'支付失败');
+            const el = document.getElementById('payModal');
+            const btn = document.getElementById('payConfirmBtn');
+            if (window.bootstrap && bootstrap.Modal) {
+                if (!_payModal) _payModal = new bootstrap.Modal(el);
+                _payModal.show();
+            } else {
+                el.style.display = 'block';
+                el.classList.add('show');
+                el.setAttribute('aria-modal','true');
+                el.removeAttribute('aria-hidden');
+            }
+
+            if (btn) {
+                btn.onclick = async () => {
+                    btn.disabled = true;
+                    try {
+                        await doPayRequest();
+                    } finally {
+                        btn.disabled = false;
+                        if (_payModal && _payModal.hide) _payModal.hide();
+                        else {
+                            el.style.display='';
+                            el.classList.remove('show');
+                            el.removeAttribute('aria-modal');
+                            el.setAttribute('aria-hidden','true');
+                        }
+                    }
+                };
+            }
         }
-        let _cancelModal;
+
+        async function doPayRequest(){
+            const res = await httpPost('/api/orders/' + order.orderId + '/pay', {});
+            if (res.code === 200) {
+                showAlert('支付成功！', {
+                    title: '支付结果',
+                    okText: '确认',
+                    onOk: () => { location.href = 'orders.html'; }
+                });
+            } else {
+                showAlert(res.msg || '支付失败');
+            }
+        }
+
         function openCancelModal(){
             const el = document.getElementById('cancelModal');
             document.getElementById('cancelReasonInput').value = '';
@@ -87,14 +127,18 @@ const id = new URLSearchParams(location.search).get('id');
             if(!reason){ showAlert('请填写取消原因'); return; }
             const res = await httpPut('/api/orders/' + order.orderId + '/cancel', {reason});
             if(res.code === 200){
-                showAlert('已取消');
+                // 成功后等待用户确认再跳转，避免提示一闪而过
+                showAlert('已取消', {
+                  title: '取消订单',
+                  okText: '确认',
+                  onOk: () => { location.href = 'orders.html'; }
+                });
                 if (_cancelModal && _cancelModal.hide) { _cancelModal.hide(); }
                 const el = document.getElementById('cancelModal');
                 el.style.display = '';
                 el.classList.remove('show');
                 el.removeAttribute('aria-modal');
                 el.setAttribute('aria-hidden','true');
-                location.href = 'orders.html';
             }else{
                 showAlert(res.msg||'取消失败');
             }

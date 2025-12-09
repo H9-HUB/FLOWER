@@ -9,37 +9,136 @@
     <link href="https://cdn.staticfile.net/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
-<body>
+<body class="page-profile">
     <!-- 统一导航由 js/common.js 注入 -->
-    <div class="container mt-4">
-        <h5>个人中心</h5>
-        <div class="card p-3">
-            <p>手机号：<span id="phone" class="text-muted"></span></p>
-        </div>
+    <div class="profile-shell">
+        <section class="profile-hero glass">
+            <div class="profile-meta">
+                <div class="profile-avatar">
+                    <img src="upload/logo.png" alt="avatar">
+                </div>
+                <div>
+                    <div class="profile-hello">Hi, Floral Friend</div>
+                    <div class="profile-phone">当前手机号：<span id="phone" class="text-muted"></span></div>
+                    <div class="profile-hint">欢迎回来，保持登录享受会员权益与专属优惠</div>
+                </div>
+            </div>
+            <div class="profile-actions">
+                <a class="pill-btn primary" href="list.html">去商城</a>
+                <a class="pill-btn ghost" href="orders.html">订单记录</a>
+            </div>
+        </section>
 
-        <h6 class="mt-4">快捷入口</h6>
-        <div class="app-grid">
-            <a class="app-tile" href="orders.html">
-                <div class="t-title">我的订单</div>
-                <div class="t-desc">查看全部订单、支付和取消</div>
-            </a>
-            <a class="app-tile" href="address.html">
-                <div class="t-title">收货地址</div>
-                <div class="t-desc">管理常用地址，轻松下单</div>
-            </a>
-            <a class="app-tile" href="cart.html">
-                <div class="t-title">购物车</div>
-                <div class="t-desc">继续挑选心仪花品</div>
-            </a>
-            <a class="app-tile" href="mailto:support@floraldreams.local">
-                <div class="t-title">联系客服</div>
-                <div class="t-desc">问题反馈与售后支持</div>
-            </a>
-        </div>
+        <section class="profile-summary">
+            <div class="summary-card">
+                <div>
+                    <div class="summary-label">订单概览</div>
+                    <div class="summary-desc">总订单：<span id="totalOrdersCount">--</span>，已完成：<span id="paidOrdersCount">--</span></div>
+                </div>
+                <a class="pill-btn ghost" href="orders.html">去查看</a>
+            </div>
+            <div class="summary-card">
+                <div>
+                    <div class="summary-label">地址管理</div>
+                    <div class="summary-desc">常用地址助力快速下单</div>
+                </div>
+                <a class="pill-btn ghost" href="address.html">去管理</a>
+            </div>
+            <div class="summary-card">
+                <div>
+                    <div class="summary-label">优惠与会员</div>
+                    <div class="summary-desc">不定时获得优惠券，享受会员权益</div>
+                </div>
+                <a class="pill-btn ghost" href="list.html">去逛逛</a>
+            </div>
+        </section>
+
+        <section class="profile-stats">
+            <div class="stat-card">
+                <div class="stat-icon">🧾</div>
+                <div>
+                    <div class="stat-label">我的订单</div>
+                    <div class="stat-desc">支付、查看、取消</div>
+                </div>
+                <a class="stat-link" href="orders.html">进入</a>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🏠</div>
+                <div>
+                    <div class="stat-label">收货地址</div>
+                    <div class="stat-desc">常用地址快捷下单</div>
+                </div>
+                <a class="stat-link" href="address.html">管理</a>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🛒</div>
+                <div>
+                    <div class="stat-label">购物车</div>
+                    <div class="stat-desc">继续挑选喜欢的花</div>
+                </div>
+                <a class="stat-link" href="cart.html">查看</a>
+            </div>
+        </section>
+
+        <section class="quick-links">
+            <div class="ql-head">快捷入口</div>
+            <div class="ql-grid">
+                <a class="ql-item" href="orders.html">
+                    <div class="ql-title">我的订单</div>
+                    <div class="ql-desc">查看全部订单、支付和取消</div>
+                </a>
+                <a class="ql-item" href="address.html">
+                    <div class="ql-title">收货地址</div>
+                    <div class="ql-desc">管理常用地址，轻松下单</div>
+                </a>
+                <a class="ql-item" href="cart.html">
+                    <div class="ql-title">购物车</div>
+                    <div class="ql-desc">继续挑选心仪花品</div>
+                </a>
+                <a class="ql-item" href="mailto:support@floraldreams.local">
+                    <div class="ql-title">联系客服</div>
+                    <div class="ql-desc">问题反馈与售后支持</div>
+                </a>
+            </div>
+        </section>
+
+        <section class="support-panel glass">
+            <div>
+                <div class="support-title">客服与安全提示</div>
+                <ul class="support-list">
+                    <li>订单与支付问题优先通过订单详情页提交。</li>
+                    <li>请勿泄露账号验证码，注意防范钓鱼链接。</li>
+                    <li>若需人工协助，邮件联系 support@floraldreams.local。</li>
+                </ul>
+            </div>
+            <a class="pill-btn primary" href="mailto:support@floraldreams.local">联系支持</a>
+        </section>
     </div>
     <script src="js/common.js"></script>
     <script>
-        document.getElementById('phone').textContent = localStorage.getItem('phone') || '-';
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('phone').textContent = localStorage.getItem('phone') || '-';
+            loadOrderStats();
+        });
+
+        async function loadOrderStats(){
+            if(!requireAuth({ message: '请先登录后查看订单概览', waitConfirm: true })) return;
+            try {
+                const res = await httpGet('/api/orders');
+                if(res.code === 200 && Array.isArray(res.data)){
+                    const total = res.data.length;
+                    const paid = res.data.filter(o => o.status === 'PAID').length;
+                    document.getElementById('totalOrdersCount').textContent = total;
+                    document.getElementById('paidOrdersCount').textContent = paid;
+                } else {
+                    document.getElementById('totalOrdersCount').textContent = '--';
+                    document.getElementById('paidOrdersCount').textContent = '--';
+                }
+            } catch (e) {
+                document.getElementById('totalOrdersCount').textContent = '--';
+                document.getElementById('paidOrdersCount').textContent = '--';
+            }
+        }
     </script>
 </body>
 

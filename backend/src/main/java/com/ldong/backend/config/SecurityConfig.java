@@ -43,6 +43,8 @@ public class SecurityConfig {
                         })
                 )
             .authorizeHttpRequests(auth -> auth
+                // 允许所有预检请求，否则浏览器在跨域 PUT/DELETE 时会 401
+                .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers(
                     "/api/login",
                     "/api/register",

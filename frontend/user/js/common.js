@@ -80,15 +80,31 @@ function hdr() {
 function go(url) { location.href = url; }
 function updateCartBadge(n) {
   const b = document.getElementById('badge');
-  if (b) b.textContent = n;
+  if (b) {
+    b.textContent = n;
+    b.style.display = n > 0 ? '' : 'none';
+  }
 }
 
 async function updateCartCount() {
-  if (!isAuthed()) return;
+  if (!isAuthed()) {
+    const badge = document.getElementById('badge');
+    if (badge) badge.style.display = 'none';
+    return;
+  }
   const res = await httpGet('/api/cart');
   if (res.code === 200) {
     const badge = document.getElementById('badge');
-    if (badge) badge.textContent = res.data.length;   // 元素存在才赋值
+    if (badge) {
+      const totalQty = Array.isArray(res.data)
+        ? res.data.reduce((sum, it) => sum + (Number(it.quantity) || 0), 0)
+        : 0;
+      badge.textContent = totalQty;   // 按商品数量累加
+      badge.style.display = totalQty > 0 ? '' : 'none';
+    }
+  } else {
+    const badge = document.getElementById('badge');
+    if (badge) badge.style.display = 'none';
   }
 }
 
@@ -97,7 +113,7 @@ function isAuthed() { return !!localStorage.getItem('token'); }
 function requireAuth(opts = {}) {
   const { redirect = true, message = '请先登录以查看此页面' } = opts;
   if (!isAuthed()) {
-    alert(message);
+    showAlert(message);
     if (redirect) location.href = 'login.html';
     return false;
   }
@@ -115,9 +131,9 @@ function renderNavbar() {
 
   const links = [
     { href: 'index.html', text: '首页', key: 'index' },
-    { href: 'list.html', text: '商品', key: 'list' },
+    { href: 'list.html', text: '商城', key: 'list' },
     { href: 'cart.html', text: '购物车', key: 'cart', badge: true },
-    { href: 'orders.html', text: '订单', key: 'orders' },
+    { href: 'orders.html', text: '订单', key: 'orders', ordersBadge: true },
     { href: 'profile.html', text: '我的', key: 'profile' }
   ];
 
@@ -125,8 +141,9 @@ function renderNavbar() {
   if (!activeKey && path.endsWith('/order.html')) activeKey = 'orders';
   const linkHtml = links.map(l => {
     const active = l.key === activeKey ? ' active' : '';
-    const badge = l.badge ? '<span id="badge" class="app-badge">0</span>' : '';
-    return `<a class="app-link${active}" href="${l.href}">${l.text}${badge}</a>`;
+    const cartBadge = l.badge ? '<span id="badge" class="app-badge" style="display:none">0</span>' : '';
+    const ordersBadge = l.ordersBadge ? '<span id="ordersBadge" class="app-badge">0</span>' : '';
+    return `<a class="app-link${active}" href="${l.href}">${l.text}${cartBadge || ordersBadge}</a>`;
   }).join('');
 
   const authHtml = isAuthed()
@@ -138,7 +155,7 @@ function renderNavbar() {
   const brand = `
     <a class="app-brand" href="list.html" aria-label="Floral Dreams 首页">
       <span class="brand-logo" aria-hidden="true">
-        <img src="upload/logo.png" alt="Logo" width="22" height="22">
+        <img src="upload/logo.png" alt="Logo" width="30" height="30">
       </span>
       <span class="app-logo">Floral Dreams</span>
     </a>`;
@@ -162,6 +179,8 @@ function renderNavbar() {
 
   // 初始化购物车角标
   updateCartCount().catch(() => { });
+  // 初始化未支付订单角标
+  updateUnpaidOrdersBadge().catch(() => { });
 
   // 搜索表单跳转（避免默认提交刷新当前页）
   const sf = document.getElementById('navSearch');
@@ -176,3 +195,90 @@ function renderNavbar() {
 }
 
 document.addEventListener('DOMContentLoaded', renderNavbar);
+// 统计未支付订单数量并更新角标
+async function updateUnpaidOrdersBadge() {
+  try {
+    if (!isAuthed()) return;
+    const badge = document.getElementById('ordersBadge');
+    if (!badge) return;
+    const res = await httpGet('/api/orders');
+    if (res.code === 200) {
+      const list = Array.isArray(res.data) ? res.data : [];
+      const unpaid = list.reduce((sum, o) => sum + (o.status === 'UNPAID' ? 1 : 0), 0);
+      badge.textContent = unpaid;
+      badge.style.display = unpaid > 0 ? '' : 'none';
+    } else {
+      badge.style.display = 'none';
+    }
+  } catch {
+    const badge = document.getElementById('ordersBadge');
+    if (badge) badge.style.display = 'none';
+  }
+}
+
+// 统一居中弹窗提示
+function showAlert(message, opts = {}){
+  const { title = '提示', okText = '知道了', type = 'info', duration = 0, onOk } = opts;
+  let wrap = document.getElementById('appAlertWrap');
+  if(!wrap){
+    wrap = document.createElement('div');
+    wrap.id = 'appAlertWrap';
+    document.body.appendChild(wrap);
+  }
+  wrap.innerHTML = `
+    <div class="app-alert-mask" style="position:fixed;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;z-index:1050">
+      <div class="app-alert-box" style="background:#fff;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.15);max-width:420px;width:90%;padding:16px 20px;border-left:6px solid ${typeColor(type)};">
+        <div class="app-alert-title" style="font-weight:600;margin-bottom:8px;">${title}</div>
+        <div class="app-alert-msg" style="color:#555;word-break:break-word;margin-bottom:12px;">${escapeHtml(String(message||''))}</div>
+        <div class="text-end">
+          <button id="appAlertOk" class="btn btn-primary btn-sm">${okText}</button>
+        </div>
+      </div>
+    </div>`;
+  const okBtn = wrap.querySelector('#appAlertOk');
+  okBtn.addEventListener('click', ()=>{ if(typeof onOk==='function') try{onOk();}catch{}; wrap.remove(); });
+  wrap.addEventListener('click', (e)=>{ if(e.target === wrap.firstElementChild) wrap.remove(); });
+  if(duration && duration > 0){ setTimeout(()=>{ try{wrap.remove();}catch{} }, duration); }
+}
+
+function showConfirm(message, opts = {}){
+  const { title='确认', okText='确定', cancelText='取消', onOk, onCancel } = opts;
+  let wrap = document.getElementById('appConfirmWrap');
+  if(!wrap){
+    wrap = document.createElement('div');
+    wrap.id = 'appConfirmWrap';
+    document.body.appendChild(wrap);
+  }
+  wrap.innerHTML = `
+    <div class="app-alert-mask" style="position:fixed;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;z-index:1050">
+      <div class="app-alert-box" style="background:#fff;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.15);max-width:420px;width:90%;padding:16px 20px;">
+        <div class="app-alert-title" style="font-weight:600;margin-bottom:8px;">${title}</div>
+        <div class="app-alert-msg" style="color:#555;word-break:break-word;margin-bottom:12px;">${escapeHtml(String(message||''))}</div>
+        <div class="text-end" style="display:flex;gap:8px;justify-content:flex-end;">
+          <button id="appConfirmCancel" class="btn btn-outline-secondary btn-sm">${cancelText}</button>
+          <button id="appConfirmOk" class="btn btn-primary btn-sm">${okText}</button>
+        </div>
+      </div>
+    </div>`;
+  const okBtn = wrap.querySelector('#appConfirmOk');
+  const cancelBtn = wrap.querySelector('#appConfirmCancel');
+  okBtn.addEventListener('click', ()=>{ if(typeof onOk==='function') try{onOk();}catch{}; wrap.remove(); });
+  cancelBtn.addEventListener('click', ()=>{ if(typeof onCancel==='function') try{onCancel();}catch{}; wrap.remove(); });
+  wrap.addEventListener('click', (e)=>{ if(e.target === wrap.firstElementChild) { if(typeof onCancel==='function') try{onCancel();}catch{}; wrap.remove(); } });
+}
+
+function typeColor(t){
+  if(t==='success') return '#28a745';
+  if(t==='warning') return '#ffc107';
+  if(t==='danger') return '#dc3545';
+  return '#6a5acd';
+}
+function escapeHtml(s){
+  return s.replace(/[&<>"']/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;' }[c]));
+}
+
+// 全局暴露，确保各页面可调用
+if (typeof window !== 'undefined') {
+  window.showAlert = showAlert;
+  window.showConfirm = showConfirm;
+}

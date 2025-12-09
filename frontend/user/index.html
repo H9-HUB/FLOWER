@@ -7,163 +7,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.loli.net/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
-        
-    <style>
-        *{
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --mint: #bfe3d0;
-            --pearl: #f7f7f4;
-            --blush: #f7c8b0;
-            --leaf: #5a8f7b;
-            --text: #444;
-        }
-
-        body {
-            font-family: "Segoe UI", system-ui, -apple-system, "PingFang SC", "Microsoft Yahei", sans-serif;
-            background:
-                linear-gradient(135deg, rgba(253, 253, 252, 0.9), rgba(245, 251, 247, 0.9)),
-                url('upload/flower-bg.png'); /* 背景图 + 柔和遮罩 */
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: var(--text);
-        }
-
-        /* 去掉导航栏：不再显示顶栏链接 */
-
-        h1 {
-            font-size: 3rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            color: #2e5b4b;
-        }
-        .lead { margin-top: .75rem; font-size: 1.15rem; color: #2e5b4b; }
-        .sub { margin-top: .5rem; font-size: 1rem; color: #3a725e; }
-        .tagline { margin-top: .5rem; font-size: 1rem; color: #5a8f7b; }
-
-        /* 促销/宣传语块：多行短句，柔和排版 */
-        .promo {
-            margin-top: 1.1rem;
-            display: grid;
-            grid-template-columns: repeat(2, minmax(220px, 360px));
-            gap: .6rem 1rem;
-            align-items: center;
-            justify-content: center;
-            max-width: 880px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .promo .line {
-            background: rgba(255, 255, 255, 0.72);
-            border: 1px solid rgba(90, 143, 123, 0.18);
-            color: #2f5f4e;
-            padding: .6rem .9rem;
-            border-radius: 12px;
-            font-size: .98rem;
-            box-shadow: 0 4px 14px rgba(95, 143, 123, 0.08);
-        }
-        .promo .accent { color: #3a725e; font-weight: 600; }
-        .promo .soft { color: #5a8f7b; }
-
-        /* 花卉动效按钮（首页版）：hover 颜色比 login 更浅 */
-        .btn-floral {
-            height: 4em;
-            width: 100%;
-            max-width: 460px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: transparent;
-            border: 0;
-            cursor: pointer;
-            margin: 22px auto; /* 按钮在文字下方，留出更大间距 */
-        }
-        .btn-floral .wrapper {
-            height: 2.6em;
-            min-width: 9em;
-            padding: 0 .6em;
-            position: relative;
-            background: transparent;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .btn-floral .text {
-            font-size: 18px;
-            z-index: 1;
-            color: #25473c;
-            padding: 8px 18px;
-            border-radius: 14px;
-            background: rgba(255, 255, 255, 0.78);
-            border: 1px solid rgba(90, 143, 123, 0.25);
-            transition: all 0.4s ease;
-        }
-        .flower { display: grid; grid-template-columns: 1em 1em; position: absolute; transition: grid-template-columns 0.8s ease; }
-        .flower1 { top: -12px; left: -13px; transform: rotate(5deg); }
-        .flower2 { bottom: -5px; left: 8px; transform: rotate(35deg); }
-        .flower3 { bottom: -15px; transform: rotate(0deg); }
-        .flower4 { top: -14px; transform: rotate(15deg); }
-        .flower5 { right: 11px; top: -3px; transform: rotate(25deg); }
-        .flower6 { right: -15px; bottom: -15px; transform: rotate(30deg); }
-        .petal { height: 1em; width: 1em; border-radius: 40% 70% / 7% 90%; background: linear-gradient(var(--mint), var(--blush)); border: 0.5px solid rgba(90, 143, 123, 0.35); z-index: 0; transition: width 0.8s ease, height 0.8s ease; }
-        .two { transform: rotate(90deg); }
-        .three { transform: rotate(270deg); }
-        .four { transform: rotate(180deg); }
-        .btn-floral:hover .petal { background: linear-gradient(#cfeee0, #fde4d6); border: 0.5px solid rgba(90, 143, 123, 0.45); }
-        .btn-floral:hover .flower { grid-template-columns: 1.5em 1.5em; }
-        .btn-floral:hover .flower .petal { width: 1.5em; height: 1.5em; }
-        .btn-floral:hover .text { background: rgba(255, 255, 255, 0.65); }
-        .btn-floral:hover .flower1 { animation: 15s linear 0s infinite flower1; }
-        .btn-floral:hover .flower2 { animation: 13s linear 1s infinite flower2; }
-        .btn-floral:hover .flower3 { animation: 16s linear 1s infinite flower3; }
-        .btn-floral:hover .flower4 { animation: 17s linear 1s infinite flower4; }
-        .btn-floral:hover .flower5 { animation: 20s linear 1s infinite flower5; }
-        .btn-floral:hover .flower6 { animation: 15s linear 1s infinite flower6; }
-        @keyframes flower1 { 0%{transform:rotate(5deg);} 100%{transform:rotate(365deg);} }
-        @keyframes flower2 { 0%{transform:rotate(35deg);} 100%{transform:rotate(-325deg);} }
-        @keyframes flower3 { 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
-        @keyframes flower4 { 0%{transform:rotate(15deg);} 100%{transform:rotate(375deg);} }
-        @keyframes flower5 { 0%{transform:rotate(25deg);} 100%{transform:rotate(-335deg);} }
-        @keyframes flower6 { 0%{transform:rotate(30deg);} 100%{transform:rotate(390deg);} }
-    </style>
+    <link href="css/index.css" rel="stylesheet">
 </head>
 
 <body>
     <!-- 已移除导航栏，页面更简洁，与登录页一致风格 -->
     <div>
-        <h1>Floral Dreams</h1>
+        <h1>Floral Dreams · 花之梦</h1>
         <p class="lead">发现生活的美好瞬间</p>
         <p class="sub">一束花，一段温柔时光</p>
         <p class="tagline">把自然的芬芳带入日常，把优雅留在心间</p>
-        <div class="promo">
-            <div class="line"><span class="accent">每日鲜采</span>｜从花田到你手中，时效保证</div>
-            <div class="line"><span class="accent">专属定制</span>｜生日、周年、开业花束，风格任选</div>
-            <div class="line"><span class="accent">花艺到家</span>｜轻松布置客厅与餐桌，氛围加分</div>
-            <div class="line"><span class="accent">品质保证</span>｜优选花材，持久绽放更耐看</div>
-            <div class="line"><span class="accent">用花表达心意</span>｜传递祝福、致谢与浪漫</div>
-            <div class="line"><span class="accent">每周上新</span>｜热门配色与季节限定不容错过</div>
-            <div class="line"><span class="accent">门店自提/极速达</span>｜当日送达，惊喜不迟到</div>
-            <div class="line"><span class="accent">会员礼遇</span>｜积分回馈，专属折扣与节日礼物</div>
-        </div>
+        
+            <div class="promo">
+                <div class="line"><span class="icon">🌸</span><span class="accent">每日鲜采</span>｜从花田到你手中，时效保证</div>
+                <div class="line"><span class="icon">🎁</span><span class="accent">专属定制</span>｜生日、周年、开业花束，风格任选</div>
+                <div class="line"><span class="icon">🏠</span><span class="accent">花艺到家</span>｜轻松布置客厅与餐桌，氛围加分</div>
+                <div class="line"><span class="icon">✅</span><span class="accent">品质保证</span>｜优选花材，持久绽放更耐看</div>
+                <div class="line"><span class="icon">💌</span><span class="accent">用花表达心意</span>｜传递祝福、致谢与浪漫</div>
+                <div class="line"><span class="icon">🆕</span><span class="accent">每周上新</span>｜热门配色与季节限定不容错过</div>
+                <div class="line"><span class="icon">⚡</span><span class="accent">门店自提/极速达</span>｜当日送达，惊喜不迟到</div>
+                <div class="line"><span class="icon">💎</span><span class="accent">会员礼遇</span>｜积分回馈，专属折扣与节日礼物</div>
+            </div>
         <button class="btn-floral" onclick="location.href='list.html'">
             <div class="wrapper">
                 <p class="text">立即探索</p>
-                <div class="flower flower1"><div class="petal one"></div><div class="petal two"></div><div class="petal three"></div><div class="petal four"></div></div>
-                <div class="flower flower2"><div class="petal one"></div><div class="petal two"></div><div class="petal three"></div><div class="petal four"></div></div>
-                <div class="flower flower3"><div class="petal one"></div><div class="petal two"></div><div class="petal three"></div><div class="petal four"></div></div>
-                <div class="flower flower4"><div class="petal one"></div><div class="petal two"></div><div class="petal three"></div><div class="petal four"></div></div>
-                <div class="flower flower5"><div class="petal one"></div><div class="petal two"></div><div class="petal three"></div><div class="petal four"></div></div>
-                <div class="flower flower6"><div class="petal one"></div><div class="petal two"></div><div class="petal three"></div><div class="petal four"></div></div>
+                <div class="flower flower1">
+                    <div class="petal one"></div>
+                    <div class="petal two"></div>
+                    <div class="petal three"></div>
+                    <div class="petal four"></div>
+                </div>
+                <div class="flower flower2">
+                    <div class="petal one"></div>
+                    <div class="petal two"></div>
+                    <div class="petal three"></div>
+                    <div class="petal four"></div>
+                </div>
+                <div class="flower flower3">
+                    <div class="petal one"></div>
+                    <div class="petal two"></div>
+                    <div class="petal three"></div>
+                    <div class="petal four"></div>
+                </div>
+                <div class="flower flower4">
+                    <div class="petal one"></div>
+                    <div class="petal two"></div>
+                    <div class="petal three"></div>
+                    <div class="petal four"></div>
+                </div>
+                <div class="flower flower5">
+                    <div class="petal one"></div>
+                    <div class="petal two"></div>
+                    <div class="petal three"></div>
+                    <div class="petal four"></div>
+                </div>
+                <div class="flower flower6">
+                    <div class="petal one"></div>
+                    <div class="petal two"></div>
+                    <div class="petal three"></div>
+                    <div class="petal four"></div>
+                </div>
             </div>
         </button>
     </div>

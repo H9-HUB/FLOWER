@@ -16,10 +16,13 @@ public class Order {
     private Long id;
     private String sn;
     private Long userId;
+    private Long addressId;
     private BigDecimal totalAmount;
     private String status;   // UNPAID / PAID / CANCELLED / COMPLETED
     @TableField("create_time")
     private LocalDateTime createTime;
     @TableField("pay_time")
     private LocalDateTime payTime;
+    @TableField("cancel_reason")
+    private String cancelReason;
 }

@@ -6,7 +6,7 @@
     <title>订单支付 - Floral Dreams</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="css/style.css" rel="stylesheet">
-    <link href="https://cdn.staticfile.net/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
     <style>
         :root {
             --primary: #ff7f50;
@@ -44,64 +44,73 @@
     <!-- 统一导航由 js/common.js 注入 -->
 
     <div class="container">
-        <div class="card-box">
-            <h5>订单支付</h5>
+                <div class="card-box">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="m-0">订单支付</h5>
+                            <a href="orders.html" class="btn btn-outline-secondary btn-sm">返回订单列表</a>
+                        </div>
             <div class="mt-3">订单号：<span id="sn" class="text-muted"></span></div>
             <div class="mt-2">应付金额：<span id="amount" class="price"></span></div>
+            <div class="mt-2">订单状态：<span id="statusTag" class="badge bg-secondary"></span></div>
+            <div class="mt-2" id="payTimeRow" style="display:none;">付款时间：<span id="payTime" class="text-muted"></span></div>
+            <div class="mt-4">
+                <h6>收货信息</h6>
+                <style>
+                    .addr-view { background:#f9fafb; border:1px solid #e9ecef; border-radius:10px; padding:.75rem 1rem; }
+                    .addr-actions { display:flex; gap:.75rem; align-items:center; margin-top:.5rem; }
+                    .addr-link { font-size:.9rem; color:#6c757d; cursor:pointer; text-decoration: none;}
+                    .addr-link:hover { color:#495057; text-decoration: none; }
+                    .addr-list .addr-item { padding:.5rem .75rem; border:1px solid #e9ecef; border-radius:10px; margin-bottom:.5rem; background:#fff; }
+                    .addr-item input { margin-right:.5rem; }
+                </style>
+                <div id="addrBox" class="addr-view">
+                    <div id="addrCurrent" class="text-muted">加载地址中...</div>
+                    <div class="addr-actions">
+                        <span id="addrToggle" class="addr-link d-none">切换其他地址</span>
+                        <a href="address.html" class="addr-link">管理地址</a>
+                    </div>
+                    <div id="addrListWrap" class="addr-list d-none mt-2"></div>
+                </div>
+            </div>
             <div class="mt-4">
                 <h6>商品清单</h6>
                 <div id="items" class="small text-muted">加载中...</div>
             </div>
+                <div id="cancelReasonBox" class="mt-3" style="display:none;">
+                    <h6>取消原因</h6>
+                    <div id="cancelReasonText" class="text-muted"></div>
+                </div>
             <div class="mt-4">
-                <button id="payBtn" class="btn-gradient" onclick="pay()">立即支付</button>
-                <button class="btn btn-outline-secondary ms-2" onclick="cancelOrder()">取消订单</button>
+                <button id="payBtn" class="btn btn-primary" onclick="pay()">立即支付</button>
+                                <button id="cancelBtn" class="btn btn-outline-secondary ms-2" onclick="openCancelModal()">取消订单</button>
             </div>
         </div>
     </div>
 
+        <!-- 取消原因填写弹窗 -->
+        <div class="modal" tabindex="-1" id="cancelModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">填写取消原因</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <textarea id="cancelReasonInput" class="form-control" rows="3" placeholder="请简要说明取消的原因"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">返回</button>
+                        <button class="btn btn-danger" onclick="submitCancel()">确认取消订单</button>
+                    </div>
+                </div>
+
+                <!-- 引入 Bootstrap JS（本地文件，避免外网超时） -->
+                <script src="js/bootstrap.bundle.min.js"></script>
+            </div>
+        </div>
+
     <script src="js/common.js"></script>
-    <script>
-        const id = new URLSearchParams(location.search).get('id');
-        let order = {};
-        init();
-        async function init() {
-            if(!requireAuth({message:'请先登录后进行支付与查看订单详情'})) return;
-            const res = await httpGet('/api/orders');          // 我的订单列表
-            if (res.code !== 200) { alert('请先登录'); location = 'login.html'; return; }
-            order = res.data.find(o => o.orderId == id);
-            if (!order) { alert('订单不存在'); location = 'list.html'; return; }
-            document.getElementById('sn').textContent = order.sn;
-            document.getElementById('amount').textContent = '¥' + order.totalAmount.toFixed(2);
-            if (order.status !== 'UNPAID') document.getElementById('payBtn').disabled = true;
-
-            // 加载并展示商品条目（仅使用已加载的订单对象，避免额外接口401）
-            renderOrderItemsFromOrder();
-        }
-
-        function renderOrderItemsFromOrder(){
-            const box = document.getElementById('items');
-            const items = Array.isArray(order.items) ? order.items : [];
-            if(!items.length){ box.textContent = '暂无商品'; return; }
-            box.innerHTML = items.map(it=>{
-                const price = typeof it.price === 'number' ? it.price.toFixed(2) : (it.price || '—');
-                const qty = typeof it.quantity === 'number' ? it.quantity : (it.quantity || '1');
-                return `<div>· ${it.flowerName || '商品'} x ${qty}（¥${price}）</div>`;
-            }).join('');
-        }
-
-        async function pay() {
-            if (!confirm('确认支付？')) return;
-            const res = await httpPost('/api/orders/' + order.orderId + '/pay', {});
-            if (res.code === 200) { alert('支付成功！'); location.href = 'orders.html'; }
-            else alert(res.msg);
-        }
-        async function cancelOrder() {
-            if (!confirm('确认取消？')) return;
-            const res = await httpPut('/api/orders/' + order.orderId + '/cancel', {});
-            if (res.code === 200) { alert('已取消'); location.href = 'list.html'; }
-            else alert(res.msg);
-        }
-    </script>
+    <script src="js/order.js"></script>
 </body>
 
 </html>

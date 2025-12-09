@@ -14,30 +14,54 @@
     <!-- 统一导航由 js/common.js 注入 -->
 
     <section class="container mt-4">
-        <div class="row">
-            <div class="col-lg-6"><img id="mainImg" class="img-fluid rounded shadow"></div>
-            <div class="col-lg-6 info">
-                <h1 id="title"></h1>
-                <p id="desc" class="mt-3 text-secondary"></p>
-                <div class="price-row"><span class="price">¥<span id="price"></span></span>
-                    <span class="badge bg-success">库存 <span id="stock"></span></span>
-                </div>
+        <div class="bar">
+            <a href="list.html" class="back">返回商城</a>
+            <h5 class="title">商品详情</h5>
+        </div>
+        <div class="product-card">
+            <div class="product-wrap">
+                <div class="product-img"><img id="mainImg" class="rounded shadow"></div>
+                <div class="product-info">
+                    <h1 id="title"></h1>
+                    <p id="desc" class="text-secondary"></p>
+                    <div class="price-row"><span class="price">¥<span id="price"></span></span>
+                        <span class="badge bg-success">库存 <span id="stock"></span></span>
+                    </div>
 
-                <div class="qty-row">
-                    <label>数量</label>
-                    <div class="qty-box"><button onclick="changeQty(-1)">-</button>
-                        <input id="qty" value="1" min="1"><button onclick="changeQty(1)">+</button>
+                    <div class="qty-row">
+                        <label>数量</label>
+                        <div class="qty-box"><button onclick="changeQty(-1)">-</button>
+                            <input id="qty" value="1" min="1"><button onclick="changeQty(1)">+</button>
+                        </div>
+                    </div>
+
+                    <div class="actions mt-2">
+                        <button class="CartBtn" onclick="addCart()">
+                            <span class="IconContainer">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 576 512" fill="#25473c"
+                                    class="cart">
+                                    <path
+                                        d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z">
+                                    </path>
+                                </svg>
+                            </span>
+                            <p class="text">加入购物车</p>
+                        </button>
+                        <button class="CartBtn" onclick="buyNow()">
+                            <span class="IconContainer">
+                                <!-- 信用卡图标，表示立即购买 -->
+                                <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 576 512"
+                                    fill="#25473c">
+                                    <path
+                                        d="M64 64C28.7 64 0 92.7 0 128V384c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V128c0-35.3-28.7-64-64-64H64zm0 64H512v32H64V128zm0 96H288v64H64V224z" />
+                                </svg>
+                            </span>
+                            <p class="text">立即购买</p>
+                        </button>
                     </div>
                 </div>
-
-                                <button class="CartBtn" onclick="addCart()">
-                                    <span class="IconContainer">
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 576 512" fill="#25473c" class="cart"><path d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"></path></svg>
-                                    </span>
-                                    <p class="text">加入购物车</p>
-                                </button>
-                <a href="cart.html" class="btn-link">查看购物车 →</a>
             </div>
+        </div>
         </div>
     </section>
 

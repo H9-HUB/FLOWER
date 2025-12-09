@@ -82,6 +82,42 @@ public class CartController {
         return R.error("删除失败");
     }
 
+    /** 修改购物车数量：传入 delta 为 +1/-1 */
+    @PutMapping("/cart/{id}")
+    public R<Void> change(@PathVariable Long id, @RequestBody ChangeReq req) {
+        Long userId = SecurityUtil.currentUserId();
+        if (userId == null) return R.error("未登录");
+
+        Cart cart = cartService.lambdaQuery()
+                .eq(Cart::getId, id)
+                .eq(Cart::getUserId, userId)
+                .one();
+        if (cart == null) return R.error("购物车项不存在");
+
+        Flower flower = flowerService.getById(cart.getFlowerId());
+        if (flower == null || !"ON_SALE".equals(flower.getStatus()))
+            return R.error("商品不存在或已下架");
+
+        int newQty = cart.getQuantity() + req.getDelta();
+        // 若减少到小于1，则直接移除购物车项
+        if (newQty < 1) {
+            cartService.removeById(id);
+            return R.ok();
+        }
+        if (newQty > flower.getStock()) return R.error("库存不足");
+
+        cart.setQuantity(newQty);
+        cartService.updateById(cart);
+        return R.ok();
+    }
+
+    /** 简单请求体：只需要增量 */
+    public static class ChangeReq {
+        private int delta;
+        public int getDelta() { return delta; }
+        public void setDelta(int delta) { this.delta = delta; }
+    }
+
     private CartVO toVO(Cart c) {
         CartVO v = new CartVO();
         v.setId(c.getId());

@@ -1,5 +1,7 @@
-CREATE DATABASE flower CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE flower;
+
+
+CREATE DATABASE flower CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 CREATE TABLE user (
                       id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -115,3 +117,10 @@ CREATE TABLE address (
     INDEX idx_user (user_id),
     FOREIGN KEY (user_id) REFERENCES user(id)
 );
+
+-- 增加订单的地址字段（如果尚未添加）
+ALTER TABLE `order` ADD COLUMN `address_id` BIGINT NULL AFTER `user_id`;
+
+USE flower;
+-- 增加订单取消原因字段
+ALTER TABLE `order` ADD COLUMN `cancel_reason` VARCHAR(255) NULL AFTER `pay_time`;

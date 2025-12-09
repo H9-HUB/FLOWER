@@ -5,10 +5,11 @@
   <title>收货地址 - Floral Dreams</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="css/style.css" rel="stylesheet">
-  <link href="https://cdn.staticfile.net/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/bootstrap.min.css" rel="stylesheet">
   <style>
     .empty{background:#fff;border-radius:12px;box-shadow:var(--shadow);padding:2rem;text-align:center;color:#666}
     .addr-card{padding:1rem}
+    /* 使用统一按钮样式，避免与其他界面不一致 */
   </style>
 </head>
 <body>
@@ -16,7 +17,7 @@
   <div class="container mt-4">
     <div class="d-flex align-items-center justify-content-between">
       <h5 class="m-0">收货地址</h5>
-      <button class="btn-gradient" onclick="openAddrForm()">新增地址</button>
+      <button class="btn btn-primary" onclick="openAddrForm()">新增地址</button>
     </div>
 
     <div id="addrList" class="mt-3"></div>
@@ -75,7 +76,7 @@
   </div>
 
   <script src="js/common.js"></script>
-  <script src="https://cdn.staticfile.net/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <script src="js/bootstrap.bundle.min.js"></script>
   <script>
     let addrCache = [];
     let editingId = null;
@@ -109,8 +110,8 @@
           <div><strong>${a.name}</strong> ${a.phone}</div>
           <div class="text-muted mt-1">${a.province}${a.city}${a.district}${a.detail} ${a.isDefault===1?'<span class="badge bg-success">默认</span>':''}</div>
           <div class="mt-2">
-            <button class="btn-outline" onclick="openAddrForm(${a.id})">编辑</button>
-            <button class="btn-outline" onclick="delAddress(${a.id})">删除</button>
+            <button class="btn btn-outline-secondary btn-sm" onclick="openAddrForm(${a.id})">编辑</button>
+            <button class="btn btn-outline-danger btn-sm" onclick="delAddress(${a.id})">删除</button>
           </div>
         </div>
       `).join('');
@@ -150,12 +151,12 @@
         res = await httpPost('/api/addresses', payload);
       }
       if(res.code===200){ addrModal?.hide(); init(); }
-      else { alert(res.msg||'保存失败'); }
+      else { showAlert(res.msg||'保存失败'); }
     }
     async function delAddress(id){
       if(!confirm('确定删除该地址吗？')) return;
       const res = await httpDelete('/api/addresses/'+id);
-      if(res.code===200){ init(); } else { alert(res.msg||'删除失败'); }
+      if(res.code===200){ init(); } else { showAlert(res.msg||'删除失败'); }
     }
 
     async function httpPut(url, data){

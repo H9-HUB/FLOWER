@@ -1,0 +1,288 @@
+:root {
+            /* 小清新花店主题色 */
+            --mint: #bfe3d0;        /* 薄荷绿 */
+            --pearl: #f7f7f4;       /* 珍珠白 */
+            --blush: #f7c8b0;       /* 浅蜜桃 */
+            --leaf: #5a8f7b;        /* 叶绿（文字强调）*/
+            --text: #444;           /* 正文色 */
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                radial-gradient(1200px 600px at 20% 10%, #ffffff 0%, #f9fbf8 40%, #f3f9f5 100%),
+                linear-gradient(135deg, #fdfdfc 0%, #f5fbf7 100%);
+            color: var(--text);
+        }
+
+        .login-shell {
+            width: 60vw;           /* 约屏幕 2/3 */
+            max-width: 960px;
+            min-width: 700px;
+            min-height: 60vh;      /* 收紧高度，减少空白 */
+            background: var(--pearl);
+            border-radius: 16px;   /* 稍微收紧圆角 */
+            box-shadow: 0 8px 24px rgba(90, 143, 123, 0.14);
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 6fr 5fr; /* 左大右小，差距不大 */
+        }
+
+        .pane-left {
+            padding: 2.25rem 1.75rem; /* 收紧内边距，减少空白 */
+            display: flex;             /* 居中内容 */
+            align-items: center;
+            justify-content: center;
+            background:
+                linear-gradient(135deg, rgba(191, 227, 208, 0.9), rgba(247, 200, 176, 0.65)),
+                url('upload/flower-bg.png'); /* 如无此图，渐变仍适配 */
+            background-size: cover;
+            background-position: center;
+            color: #25473c;
+        }
+        .pane-left-inner { 
+            width: 90%; 
+            height: 90%;
+            max-width: 560px; 
+        }
+        .brand {
+            font-size: 32px;     
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #25473c;
+            margin-bottom: 3rem;  
+            text-align: center;
+        }
+        .welcome {
+            font-family: "Segoe UI", system-ui, -apple-system, "PingFang SC", "Microsoft Yahei", sans-serif;
+            font-size: 28px;     
+            line-height: 1.35;    
+            margin-top: 3rem; 
+            margin-bottom: 3rem;   
+            font-weight: 500;
+            text-align: center;
+        }
+        .welcome-cn {
+            margin-top: .5rem;     /* 减少间距 */
+            font-size: 24px;       /* 略小一号 */
+            color: #2e5b4b;
+            text-align: center;
+        }
+        .slogan {
+            margin-top: 2rem;      /* 减少间距 */
+            font-size: 20px;       /* 略小一号 */
+            color: #3a725e;
+            line-height: 1.5;
+            text-align: center;
+        }
+        .pane-right {
+            padding: 2.25rem 1.75rem; /* 收紧内边距，减少空白 */
+            display: flex;             /* 居中内容 */
+            align-items: center;
+            justify-content: center;
+            background: #ffffff;
+        }
+
+        .login-box {
+            width: 92%;            /* 基本占满右侧区域 */
+            max-width: 480px;
+            margin: 0 auto;
+            height: 90%;
+            margin-bottom: 30px;
+        }
+
+        .title {
+            font-size: 30px;      
+            font-weight: 600;
+            color: #2e5b4b;
+            margin-bottom: 1.5rem; 
+            text-align: center;
+        }
+
+        /* 经典按钮保留（备用） */
+        .btn-gradient { display:none; }
+
+        /* 花卉动效按钮，配色适配主题 */
+        .btn-floral {
+            height: 4em;
+            width: 100%;
+            max-width: 420px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: 0;
+            cursor: pointer;
+            margin: 18px 0; /* 上下边距更大 */
+        }
+        .btn-floral .wrapper {
+            height: 2.4em;
+            min-width: 8em;
+            padding: 0 .5em;
+            position: relative;
+            background: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .btn-floral .text {
+            font-size: 17px;
+            z-index: 1;
+            color: #25473c;
+            padding: 6px 14px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.75);
+            border: 1px solid rgba(90, 143, 123, 0.25);
+            transition: all 0.4s ease;
+        }
+        .flower {
+            display: grid;
+            grid-template-columns: 1em 1em;
+            position: absolute;
+            transition: grid-template-columns 0.8s ease;
+        }
+        .flower1 { top: -12px; left: -13px; transform: rotate(5deg); }
+        .flower2 { bottom: -5px; left: 8px; transform: rotate(35deg); }
+        .flower3 { bottom: -15px; transform: rotate(0deg); }
+        .flower4 { top: -14px; transform: rotate(15deg); }
+        .flower5 { right: 11px; top: -3px; transform: rotate(25deg); }
+        .flower6 { right: -15px; bottom: -15px; transform: rotate(30deg); }
+        .petal {
+            height: 1em;
+            width: 1em;
+            border-radius: 40% 70% / 7% 90%;
+            background: linear-gradient(var(--mint), var(--blush));
+            border: 0.5px solid rgba(90, 143, 123, 0.35);
+            z-index: 0;
+            transition: width 0.8s ease, height 0.8s ease;
+        }
+        .two { transform: rotate(90deg); }
+        .three { transform: rotate(270deg); }
+        .four { transform: rotate(180deg); }
+        .btn-floral:hover .petal {
+            background: linear-gradient(var(--leaf), var(--mint));
+            border: 0.5px solid rgba(90, 143, 123, 0.5);
+        }
+        .btn-floral:hover .flower { grid-template-columns: 1.5em 1.5em; }
+        .btn-floral:hover .flower .petal { width: 1.5em; height: 1.5em; }
+        .btn-floral:hover .text { background: rgba(255, 255, 255, 0.6); }
+        .btn-floral:hover .flower1 { animation: 15s linear 0s infinite flower1; }
+        .btn-floral:hover .flower2 { animation: 13s linear 1s infinite flower2; }
+        .btn-floral:hover .flower3 { animation: 16s linear 1s infinite flower3; }
+        .btn-floral:hover .flower4 { animation: 17s linear 1s infinite flower4; }
+        .btn-floral:hover .flower5 { animation: 20s linear 1s infinite flower5; }
+        .btn-floral:hover .flower6 { animation: 15s linear 1s infinite flower6; }
+        @keyframes flower1 { 0%{transform:rotate(5deg);} 100%{transform:rotate(365deg);} }
+        @keyframes flower2 { 0%{transform:rotate(35deg);} 100%{transform:rotate(-325deg);} }
+        @keyframes flower3 { 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
+        @keyframes flower4 { 0%{transform:rotate(15deg);} 100%{transform:rotate(375deg);} }
+        @keyframes flower5 { 0%{transform:rotate(25deg);} 100%{transform:rotate(-335deg);} }
+        @keyframes flower6 { 0%{transform:rotate(30deg);} 100%{transform:rotate(390deg);} }
+
+        /* 输入框：浮动标签 + 动画底边，配色适配主题 */
+        .input-container {
+            position: relative;
+            margin: 14px 0;
+            width: 100%;
+            margin-bottom: 1.5rem;
+        }
+        .input-container input[type="text"],
+        .input-container input[type="password"] {
+            width: 100%;
+            padding: 12px 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            background-color: #fff;
+            box-shadow: 0 4px 10px rgba(90, 143, 123, 0.12);
+            transition: box-shadow 0.25s ease, padding 0.25s ease;
+        }
+        .input-container input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(191, 227, 208, 0.45);
+            padding-top: 13px;
+        }
+        .input-container label {
+            position: absolute;
+            left: 12px;
+            top: 9px;
+            font-size: 15px;
+            color: #7a8f86; /* 柔和文本 */
+            transition: 0.2s ease all;
+            pointer-events: none;
+        }
+        .input-container input:focus + label,
+        .input-container input:valid + label {
+            top: -12px;
+            left: 0px;
+            font-size: 18px;
+            color: var(--leaf);
+            transform: translateY(-50%) scale(0.85);
+        }
+        .input-border {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--mint), var(--blush));
+            transform: scaleX(0);
+            transition: transform 0.25s ease;
+        }
+        .input-border::before,
+        .input-border::after {
+            content: "";
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background-color: var(--mint);
+            border-radius: 50%;
+            transition: transform 0.25s ease;
+        }
+        .input-border::before { left: -9px; transform: translateX(-50%) scale(0); }
+        .input-border::after { right: -9px; transform: translateX(50%) scale(0); }
+        .input-container input:focus ~ .input-border,
+        .input-container input:valid ~ .input-border {
+            transform: scaleX(1);
+        }
+        .input-container input:focus ~ .input-border::before,
+        .input-container input:focus ~ .input-border::after,
+        .input-container input:valid ~ .input-border::before,
+        .input-container input:valid ~ .input-border::after {
+            transform: scale(1);
+        }
+
+        .toggle {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .link {
+            color: var(--leaf);
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .link:hover { text-decoration: underline; }
+
+        .divider {
+            height: 1px;
+            background: rgba(0, 0, 0, 0.08);
+            margin: 1.25rem 0;
+        }
+
+        /* 底部“先逛逛”链接去掉下划线 */
+        .login-box a {
+            text-decoration: none !important;
+            border-bottom: none !important;
+        }
+        .login-box a:hover { text-decoration: none !important; }
+
+        @media (max-width: 900px) {
+            .login-shell { grid-template-columns: 1fr; min-width: unset; width: 90vw; }
+            .pane-left { display: none; }
+        }

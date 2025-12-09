@@ -1,0 +1,353 @@
+* {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --mint: #bfe3d0;
+            --pearl: #f7f7f4;
+            --blush: #f7c8b0;
+            --leaf: #5a8f7b;
+            --text: #444;
+        }
+
+        body {
+            font-family: "Segoe UI", system-ui, -apple-system, "PingFang SC", "Microsoft Yahei", sans-serif;
+            background:
+                linear-gradient(135deg, rgba(253, 253, 252, 0.9), rgba(245, 251, 247, 0.9)),
+                url('upload/flower-bg.png');
+            /* 背景图 + 柔和遮罩 */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--text);
+        }
+
+        /* 去掉导航栏：不再显示顶栏链接 */
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #2e5b4b;
+        }
+
+        .lead {
+            margin-top: .75rem;
+            margin-bottom: .75rem;
+            font-size: 1.3rem;
+            color: #2e5b4b;
+        }
+
+        .sub {
+            margin-top: .5rem;
+            font-size: 1.2rem;
+            color: #3a725e;
+        }
+
+        .tagline {
+            margin-top: .5rem;
+            font-size: 1.2rem;
+            color: #5a8f7b;
+        }
+
+        /* 促销/宣传语块：样式优化 + 轻微 hover 效果 */
+        .promo {
+            margin-top: 1.1rem;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(220px, 400px));
+            gap: 1rem 1.3rem;
+            align-items: center;
+            justify-content: center;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .promo .line {
+            position: relative;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(255, 255, 255, 0.76));
+            border: 1px solid rgba(90, 143, 123, 0.22);
+            color: #2f5f4e;
+            padding: .68rem 1rem;
+            border-radius: 14px;
+            font-size: 1rem;
+            box-shadow: 0 6px 16px rgba(95, 143, 123, 0.10);
+            transition: transform .25s ease, box-shadow .25s ease, background .25s ease, border-color .25s ease;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: .6rem;
+            white-space: nowrap;       /* 保持一行显示 */
+            text-overflow: ellipsis;   /* 超出时省略 */
+        }
+            .promo .line {
+                background: rgba(255, 255, 255, 0.72);
+                border: 1px solid rgba(90, 143, 123, 0.18);
+                color: #2f5f4e;
+                padding: .6rem .9rem;
+                border-radius: 12px;
+                font-size: .98rem;
+                box-shadow: 0 4px 14px rgba(95, 143, 123, 0.08);
+                display: flex;
+                align-items: center;
+                gap: .6rem;
+            }
+
+            .promo .icon {
+                flex: 0 0 auto;
+                width: 26px;
+                height: 26px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                background: linear-gradient(135deg, #d8efe3, #fde6d8);
+                border: 1px solid rgba(90, 143, 123, 0.25);
+                box-shadow: 0 2px 8px rgba(95, 143, 123, 0.12);
+                font-size: 15px;
+                color: #2f5f4e;
+            }
+
+        .promo .accent {
+            color: #3a725e;
+            font-weight: 600;
+        }
+
+        .promo .soft {
+            color: #5a8f7b;
+        }
+
+        /* hover：微上浮 + 阴影加强 + 亮边 & 高亮扫过 */
+        .promo .line:hover {
+            transform: translateY(-3px) scale(1.01);
+            box-shadow: 0 10px 22px rgba(95, 143, 123, 0.14);
+            border-color: rgba(90, 143, 123, 0.32);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.80));
+        }
+
+        .promo .line::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -60%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.45) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-20deg);
+            opacity: 0;
+            transition: opacity .25s ease, left .8s ease;
+        }
+
+        .promo .line:hover::after {
+            opacity: 1;
+            left: 110%;
+        }
+
+        /* 花卉动效按钮（首页版）：hover 颜色比 login 更浅 */
+        .btn-floral {
+            height: 4em;
+            width: 100%;
+            max-width: 460px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: 0;
+            cursor: pointer;
+            margin: 30px auto;
+            /* 按钮在文字下方，留出更大间距 */
+        }
+
+        .btn-floral .wrapper {
+            height: 2.6em;
+            min-width: 9em;
+            padding: 0 .6em;
+            position: relative;
+            background: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn-floral .text {
+            font-size: 18px;
+            z-index: 1;
+            color: #25473c;
+            padding: 8px 18px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.78);
+            border: 1px solid rgba(90, 143, 123, 0.25);
+            transition: all 0.4s ease;
+        }
+
+        .flower {
+            display: grid;
+            grid-template-columns: 1em 1em;
+            position: absolute;
+            transition: grid-template-columns 0.8s ease;
+        }
+
+        .flower1 {
+            top: -12px;
+            left: -13px;
+            transform: rotate(5deg);
+        }
+
+        .flower2 {
+            bottom: -5px;
+            left: 8px;
+            transform: rotate(35deg);
+        }
+
+        .flower3 {
+            bottom: -15px;
+            transform: rotate(0deg);
+        }
+
+        .flower4 {
+            top: -14px;
+            transform: rotate(15deg);
+        }
+
+        .flower5 {
+            right: 11px;
+            top: -3px;
+            transform: rotate(25deg);
+        }
+
+        .flower6 {
+            right: -15px;
+            bottom: -15px;
+            transform: rotate(30deg);
+        }
+
+        .petal {
+            height: 1em;
+            width: 1em;
+            border-radius: 40% 70% / 7% 90%;
+            background: linear-gradient(var(--mint), var(--blush));
+            border: 0.5px solid rgba(90, 143, 123, 0.35);
+            z-index: 0;
+            transition: width 0.8s ease, height 0.8s ease;
+        }
+
+        .two {
+            transform: rotate(90deg);
+        }
+
+        .three {
+            transform: rotate(270deg);
+        }
+
+        .four {
+            transform: rotate(180deg);
+        }
+
+        .btn-floral:hover .petal {
+            background: linear-gradient(#cfeee0, #fde4d6);
+            border: 0.5px solid rgba(90, 143, 123, 0.45);
+        }
+
+        .btn-floral:hover .flower {
+            grid-template-columns: 1.5em 1.5em;
+        }
+
+        .btn-floral:hover .flower .petal {
+            width: 1.5em;
+            height: 1.5em;
+        }
+
+        .btn-floral:hover .text {
+            background: rgba(255, 255, 255, 0.65);
+        }
+
+        .btn-floral:hover .flower1 {
+            animation: 15s linear 0s infinite flower1;
+        }
+
+        .btn-floral:hover .flower2 {
+            animation: 13s linear 1s infinite flower2;
+        }
+
+        .btn-floral:hover .flower3 {
+            animation: 16s linear 1s infinite flower3;
+        }
+
+        .btn-floral:hover .flower4 {
+            animation: 17s linear 1s infinite flower4;
+        }
+
+        .btn-floral:hover .flower5 {
+            animation: 20s linear 1s infinite flower5;
+        }
+
+        .btn-floral:hover .flower6 {
+            animation: 15s linear 1s infinite flower6;
+        }
+
+        @keyframes flower1 {
+            0% {
+                transform: rotate(5deg);
+            }
+
+            100% {
+                transform: rotate(365deg);
+            }
+        }
+
+        @keyframes flower2 {
+            0% {
+                transform: rotate(35deg);
+            }
+
+            100% {
+                transform: rotate(-325deg);
+            }
+        }
+
+        @keyframes flower3 {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes flower4 {
+            0% {
+                transform: rotate(15deg);
+            }
+
+            100% {
+                transform: rotate(375deg);
+            }
+        }
+
+        @keyframes flower5 {
+            0% {
+                transform: rotate(25deg);
+            }
+
+            100% {
+                transform: rotate(-335deg);
+            }
+        }
+
+        @keyframes flower6 {
+            0% {
+                transform: rotate(30deg);
+            }
+
+            100% {
+                transform: rotate(390deg);
+            }
+        }

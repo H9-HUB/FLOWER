@@ -13,7 +13,8 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/**")   // 只开放业务接口
-                        .allowedOrigins("http://localhost:5500","http://127.0.0.1:5500")
+                        // 开发环境：放开所有来源，避免 file:// 或其它端口导致 401/跨域失败
+                        .allowedOriginPatterns("*")
                         .allowedMethods("GET","POST","PUT","DELETE","OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);

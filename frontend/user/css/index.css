@@ -1,353 +1,723 @@
 * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        :root {
-            --mint: #bfe3d0;
-            --pearl: #f7f7f4;
-            --blush: #f7c8b0;
-            --leaf: #5a8f7b;
-            --text: #444;
-        }
+:root {
+    --mint: #bfe3d0;
+    --pearl: #f7f7f4;
+    --blush: #f7c8b0;
+    --leaf: #5a8f7b;
+    --text: #444;
+}
 
-        body {
-            font-family: "Segoe UI", system-ui, -apple-system, "PingFang SC", "Microsoft Yahei", sans-serif;
-            background:
-                linear-gradient(135deg, rgba(253, 253, 252, 0.9), rgba(245, 251, 247, 0.9)),
-                url('upload/flower-bg.png');
-            /* 背景图 + 柔和遮罩 */
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: var(--text);
-        }
+body {
+    font-family: "Segoe UI", system-ui, -apple-system, "PingFang SC", "Microsoft Yahei", sans-serif;
+    background:
+        linear-gradient(135deg, rgba(253, 253, 252, 0.9), rgba(245, 251, 247, 0.9));
+    /* 背景图 + 柔和遮罩 */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: var(--text);
+    min-height: 100vh;
+}
 
-        /* 去掉导航栏：不再显示顶栏链接 */
+.index-main {
+    margin: 4.5rem auto 0 auto !important;
+    max-width: 1200px;
+    display: flex;
+    gap: 2rem;
+    align-items: stretch;
+    justify-content: center;
+}
 
-        h1 {
-            font-size: 3rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            color: #2e5b4b;
-        }
+/* Migrate inline styles from index.html to CSS for easier management */
+.index-categories {
+    width: 220px;
+    border-radius: 1rem;
+    padding: 1.5rem 1rem;
+    box-shadow: 0 2px 8px #0001;
+}
 
-        .lead {
-            margin-top: .75rem;
-            margin-bottom: .75rem;
-            font-size: 1.3rem;
-            color: #2e5b4b;
-        }
+.index-categories .cat-title {
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: .5em;
+}
 
-        .sub {
-            margin-top: .5rem;
-            font-size: 1.2rem;
-            color: #3a725e;
-        }
+.index-categories #categoryList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: .7em;
+}
 
-        .tagline {
-            margin-top: .5rem;
-            font-size: 1.2rem;
-            color: #5a8f7b;
-        }
+.index-carousel {
+    flex: 1;
+    min-width: 0;
+}
 
-        /* 促销/宣传语块：样式优化 + 轻微 hover 效果 */
-        .promo {
-            margin-top: 1.1rem;
-            display: grid;
-            grid-template-columns: repeat(2, minmax(220px, 400px));
-            gap: 1rem 1.3rem;
-            align-items: center;
-            justify-content: center;
-            max-width: 900px;
-            margin-left: auto;
-            margin-right: auto;
-        }
+.carousel {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1.2rem;
+    box-shadow: 0 2px 12px #0002;
+    background: #e8f5e9;
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
 
-        .promo .line {
-            position: relative;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(255, 255, 255, 0.76));
-            border: 1px solid rgba(90, 143, 123, 0.22);
-            color: #2f5f4e;
-            padding: .68rem 1rem;
-            border-radius: 14px;
-            font-size: 1rem;
-            box-shadow: 0 6px 16px rgba(95, 143, 123, 0.10);
-            transition: transform .25s ease, box-shadow .25s ease, background .25s ease, border-color .25s ease;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            gap: .6rem;
-            white-space: nowrap;       /* 保持一行显示 */
-            text-overflow: ellipsis;   /* 超出时省略 */
-        }
-            .promo .line {
-                background: rgba(255, 255, 255, 0.72);
-                border: 1px solid rgba(90, 143, 123, 0.18);
-                color: #2f5f4e;
-                padding: .6rem .9rem;
-                border-radius: 12px;
-                font-size: .98rem;
-                box-shadow: 0 4px 14px rgba(95, 143, 123, 0.08);
-                display: flex;
-                align-items: center;
-                gap: .6rem;
-            }
+.carousel-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
 
-            .promo .icon {
-                flex: 0 0 auto;
-                width: 26px;
-                height: 26px;
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                border-radius: 50%;
-                background: linear-gradient(135deg, #d8efe3, #fde6d8);
-                border: 1px solid rgba(90, 143, 123, 0.25);
-                box-shadow: 0 2px 8px rgba(95, 143, 123, 0.12);
-                font-size: 15px;
-                color: #2f5f4e;
-            }
+.index-user {
+    width: 240px;
+    border-radius: 1rem;
+    padding: 1.5rem 1rem;
+    box-shadow: 0 2px 8px #0001;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
-        .promo .accent {
-            color: #3a725e;
-            font-weight: 600;
-        }
+/* 让右侧个人信息卡片背景与左侧分类一致 */
+.index-user {
+    background:
+        linear-gradient(135deg, rgba(191, 227, 208, 0.9), rgba(247, 200, 176, 0.65)),
+        url('../upload/flower-bg.png');
+    background-size: cover;
+    background-position: center;
+    color: #25473c;
+}
 
-        .promo .soft {
-            color: #5a8f7b;
-        }
+#userAvatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: #1B5E20;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.2rem;
+    font-weight: 600;
+    margin-bottom: .7em;
+}
 
-        /* hover：微上浮 + 阴影加强 + 亮边 & 高亮扫过 */
-        .promo .line:hover {
-            transform: translateY(-3px) scale(1.01);
-            box-shadow: 0 10px 22px rgba(95, 143, 123, 0.14);
-            border-color: rgba(90, 143, 123, 0.32);
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.80));
-        }
+#userWelcome {
+    font-size: 1.7rem;
+    font-weight: 500;
+    margin-bottom: .5em;
+}
 
-        .promo .line::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: -60%;
-            width: 60%;
-            height: 100%;
-            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.45) 50%, rgba(255,255,255,0) 100%);
-            transform: skewX(-20deg);
-            opacity: 0;
-            transition: opacity .25s ease, left .8s ease;
-        }
+.promo .line {
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(90, 143, 123, 0.18);
+    color: #2f5f4e;
+    padding: .6rem .9rem;
+    border-radius: 12px;
+    font-size: .98rem;
+    box-shadow: 0 4px 14px rgba(95, 143, 123, 0.08);
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+}
 
-        .promo .line:hover::after {
-            opacity: 1;
-            left: 110%;
-        }
+.sub {
+    margin-top: .5rem;
+    font-size: 1.2rem;
+    color: #3a725e;
+}
 
-        /* 花卉动效按钮（首页版）：hover 颜色比 login 更浅 */
-        .btn-floral {
-            height: 4em;
-            width: 100%;
-            max-width: 460px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: transparent;
-            border: 0;
-            cursor: pointer;
-            margin: 30px auto;
-            /* 按钮在文字下方，留出更大间距 */
-        }
+.tagline {
+    margin-top: .5rem;
+    font-size: 1.2rem;
+    color: #5a8f7b;
+}
 
-        .btn-floral .wrapper {
-            height: 2.6em;
-            min-width: 9em;
-            padding: 0 .6em;
-            position: relative;
-            background: transparent;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+/* 促销/宣传语块：样式优化 + 轻微 hover 效果 */
+.promo {
+    margin-top: 1.1rem;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(220px, 400px));
+    gap: 1rem 1.3rem;
+    align-items: center;
+    justify-content: center;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
 
-        .btn-floral .text {
-            font-size: 18px;
-            z-index: 1;
-            color: #25473c;
-            padding: 8px 18px;
-            border-radius: 14px;
-            background: rgba(255, 255, 255, 0.78);
-            border: 1px solid rgba(90, 143, 123, 0.25);
-            transition: all 0.4s ease;
-        }
+.promo .line {
+    position: relative;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(255, 255, 255, 0.76),
+            url('../upload/flower-bg.png'));
+    border: 1px solid rgba(90, 143, 123, 0.22);
+    color: #2f5f4e;
+    padding: .68rem 1rem;
+    border-radius: 14px;
+    font-size: 1rem;
+    box-shadow: 0 6px 16px rgba(95, 143, 123, 0.10);
+    transition: transform .25s ease, box-shadow .25s ease, background .25s ease, border-color .25s ease;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    white-space: nowrap;
+    /* 保持一行显示 */
+    text-overflow: ellipsis;
+    /* 超出时省略 */
+}
 
-        .flower {
-            display: grid;
-            grid-template-columns: 1em 1em;
-            position: absolute;
-            transition: grid-template-columns 0.8s ease;
-        }
+.promo .line {
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(90, 143, 123, 0.18);
+    color: #2f5f4e;
+    padding: .6rem .9rem;
+    border-radius: 12px;
+    font-size: .98rem;
+    box-shadow: 0 4px 14px rgba(95, 143, 123, 0.08);
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+}
 
-        .flower1 {
-            top: -12px;
-            left: -13px;
-            transform: rotate(5deg);
-        }
+.promo .icon {
+    flex: 0 0 auto;
+    width: 26px;
+    height: 26px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #d8efe3, #fde6d8);
+    border: 1px solid rgba(90, 143, 123, 0.25);
+    box-shadow: 0 2px 8px rgba(95, 143, 123, 0.12);
+    font-size: 15px;
+    color: #2f5f4e;
+}
 
-        .flower2 {
-            bottom: -5px;
-            left: 8px;
-            transform: rotate(35deg);
-        }
+.promo .accent {
+    color: #3a725e;
+    font-weight: 600;
+}
 
-        .flower3 {
-            bottom: -15px;
-            transform: rotate(0deg);
-        }
+.promo .soft {
+    color: #5a8f7b;
+}
 
-        .flower4 {
-            top: -14px;
-            transform: rotate(15deg);
-        }
+/* hover：微上浮 + 阴影加强 + 亮边 & 高亮扫过 */
+.promo .line:hover {
+    transform: translateY(-3px) scale(1.01);
+    box-shadow: 0 10px 22px rgba(95, 143, 123, 0.14);
+    border-color: rgba(90, 143, 123, 0.32);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.80));
+}
 
-        .flower5 {
-            right: 11px;
-            top: -3px;
-            transform: rotate(25deg);
-        }
+.promo .line::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -60%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.45) 50%, rgba(255, 255, 255, 0) 100%);
+    transform: skewX(-20deg);
+    opacity: 0;
+    transition: opacity .25s ease, left .8s ease;
+}
 
-        .flower6 {
-            right: -15px;
-            bottom: -15px;
-            transform: rotate(30deg);
-        }
+.promo .line:hover::after {
+    opacity: 1;
+    left: 110%;
+}
 
-        .petal {
-            height: 1em;
-            width: 1em;
-            border-radius: 40% 70% / 7% 90%;
-            background: linear-gradient(var(--mint), var(--blush));
-            border: 0.5px solid rgba(90, 143, 123, 0.35);
-            z-index: 0;
-            transition: width 0.8s ease, height 0.8s ease;
-        }
+/* 花卉动效按钮：与登录页完全一致 */
+.btn-floral {
+    height: 4em;
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    margin: 18px 0;
+}
 
-        .two {
-            transform: rotate(90deg);
-        }
+.btn-floral .wrapper {
+    height: 2.4em;
+    min-width: 8em;
+    padding: 0 .5em;
+    position: relative;
+    background: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-        .three {
-            transform: rotate(270deg);
-        }
+.btn-floral .text {
+    font-size: 17px;
+    z-index: 1;
+    color: #25473c;
+    padding: 6px 14px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.75);
+    border: 1px solid rgba(90, 143, 123, 0.25);
+    transition: all 0.4s ease;
+}
 
-        .four {
-            transform: rotate(180deg);
-        }
+.flower {
+    display: grid;
+    grid-template-columns: 1em 1em;
+    position: absolute;
+    transition: grid-template-columns 0.8s ease;
+}
 
-        .btn-floral:hover .petal {
-            background: linear-gradient(#cfeee0, #fde4d6);
-            border: 0.5px solid rgba(90, 143, 123, 0.45);
-        }
+.flower1 {
+    top: -12px;
+    left: -13px;
+    transform: rotate(5deg);
+}
 
-        .btn-floral:hover .flower {
-            grid-template-columns: 1.5em 1.5em;
-        }
+.flower2 {
+    bottom: -5px;
+    left: 8px;
+    transform: rotate(35deg);
+}
 
-        .btn-floral:hover .flower .petal {
-            width: 1.5em;
-            height: 1.5em;
-        }
+.flower3 {
+    bottom: -15px;
+    transform: rotate(0deg);
+}
 
-        .btn-floral:hover .text {
-            background: rgba(255, 255, 255, 0.65);
-        }
+.flower4 {
+    top: -14px;
+    transform: rotate(15deg);
+}
 
-        .btn-floral:hover .flower1 {
-            animation: 15s linear 0s infinite flower1;
-        }
+.flower5 {
+    right: 11px;
+    top: -3px;
+    transform: rotate(25deg);
+}
 
-        .btn-floral:hover .flower2 {
-            animation: 13s linear 1s infinite flower2;
-        }
+.flower6 {
+    right: -15px;
+    bottom: -15px;
+    transform: rotate(30deg);
+}
 
-        .btn-floral:hover .flower3 {
-            animation: 16s linear 1s infinite flower3;
-        }
+.petal {
+    height: 1em;
+    width: 1em;
+    border-radius: 40% 70% / 7% 90%;
+    background: linear-gradient(var(--mint), var(--blush));
+    border: 0.5px solid rgba(90, 143, 123, 0.35);
+    z-index: 0;
+    transition: width 0.8s ease, height 0.8s ease;
+}
 
-        .btn-floral:hover .flower4 {
-            animation: 17s linear 1s infinite flower4;
-        }
+.two {
+    transform: rotate(90deg);
+}
 
-        .btn-floral:hover .flower5 {
-            animation: 20s linear 1s infinite flower5;
-        }
+.three {
+    transform: rotate(270deg);
+}
 
-        .btn-floral:hover .flower6 {
-            animation: 15s linear 1s infinite flower6;
-        }
+.four {
+    transform: rotate(180deg);
+}
 
-        @keyframes flower1 {
-            0% {
-                transform: rotate(5deg);
-            }
+.btn-floral:hover .petal {
+    background: linear-gradient(var(--leaf), var(--mint));
+    border: 0.5px solid rgba(90, 143, 123, 0.5);
+}
 
-            100% {
-                transform: rotate(365deg);
-            }
-        }
+.btn-floral:hover .flower {
+    grid-template-columns: 1.5em 1.5em;
+}
 
-        @keyframes flower2 {
-            0% {
-                transform: rotate(35deg);
-            }
+.btn-floral:hover .flower .petal {
+    width: 1.5em;
+    height: 1.5em;
+}
 
-            100% {
-                transform: rotate(-325deg);
-            }
-        }
+.btn-floral:hover .text {
+    background: rgba(255, 255, 255, 0.6);
+}
 
-        @keyframes flower3 {
-            0% {
-                transform: rotate(0deg);
-            }
+.btn-floral:hover .flower1 {
+    animation: 15s linear 0s infinite flower1;
+}
 
-            100% {
-                transform: rotate(360deg);
-            }
-        }
+.btn-floral:hover .flower2 {
+    animation: 13s linear 1s infinite flower2;
+}
 
-        @keyframes flower4 {
-            0% {
-                transform: rotate(15deg);
-            }
+.btn-floral:hover .flower3 {
+    animation: 16s linear 1s infinite flower3;
+}
 
-            100% {
-                transform: rotate(375deg);
-            }
-        }
+.btn-floral:hover .flower4 {
+    animation: 17s linear 1s infinite flower4;
+}
 
-        @keyframes flower5 {
-            0% {
-                transform: rotate(25deg);
-            }
+.btn-floral:hover .flower5 {
+    animation: 20s linear 1s infinite flower5;
+}
 
-            100% {
-                transform: rotate(-335deg);
-            }
-        }
+.btn-floral:hover .flower6 {
+    animation: 15s linear 1s infinite flower6;
+}
 
-        @keyframes flower6 {
-            0% {
-                transform: rotate(30deg);
-            }
+@keyframes flower1 {
+    0% {
+        transform: rotate(5deg);
+    }
 
-            100% {
-                transform: rotate(390deg);
-            }
-        }
+    100% {
+        transform: rotate(365deg);
+    }
+}
+
+@keyframes flower2 {
+    0% {
+        transform: rotate(35deg);
+    }
+
+    100% {
+        transform: rotate(-325deg);
+    }
+}
+
+@keyframes flower3 {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes flower4 {
+    0% {
+        transform: rotate(15deg);
+    }
+
+    100% {
+        transform: rotate(375deg);
+    }
+}
+
+@keyframes flower5 {
+    0% {
+        transform: rotate(25deg);
+    }
+
+    100% {
+        transform: rotate(-335deg);
+    }
+}
+
+@keyframes flower6 {
+    0% {
+        transform: rotate(30deg);
+    }
+
+    100% {
+        transform: rotate(390deg);
+    }
+}
+
+@media (max-width: 900px) {
+    .index-main {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .index-categories,
+    .index-user,
+    .index-carousel>.carousel {
+        width: 100% !important;
+        min-width: 0 !important;
+    }
+
+    .index-carousel>.carousel {
+        height: 320px !important;
+    }
+}
+
+.carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.82);
+    border: none;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 12px #0002;
+    cursor: pointer;
+    z-index: 10;
+    transition: background .2s, box-shadow .2s;
+    opacity: 0.82;
+}
+
+.carousel-arrow:hover {
+    background: #43a047;
+    box-shadow: 0 4px 18px #43a04733;
+    opacity: 1;
+}
+
+.carousel-arrow svg polyline {
+    transition: stroke .2s;
+}
+
+.carousel-arrow:hover svg polyline {
+    stroke: #fff;
+}
+
+.carousel-arrow-left {
+    left: 1.2rem;
+}
+
+.carousel-arrow-right {
+    right: 1.2rem;
+}
+
+.carousel-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carousel-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform .6s cubic-bezier(.77, 0, .18, 1), opacity .6s;
+}
+
+/* 右侧用户快捷入口：竖排图标+文字卡片，占满右侧剩余高度 */
+
+/* 左侧分类栏：使列表占据可用高度，底部按钮靠下 */
+.index-categories {
+    display: flex;
+    flex-direction: column;
+    /* 同步登录页左侧的渲染：渐变 + 可选背景图 */
+    background:
+        linear-gradient(135deg, rgba(191, 227, 208, 0.9), rgba(247, 200, 176, 0.65));
+    background-size: cover;
+    background-position: center;
+    color: #25473c;
+    /* 与登录页左侧字体色匹配 */
+}
+
+.index-categories #categoryList {
+    flex: 1 1 auto;
+    overflow: auto;
+}
+
+.index-categories .cat-bottom {
+    margin-top: 1rem;
+}
+
+/* 保证左侧底部按钮与登录页完全一致的间距 */
+.index-categories .cat-bottom .btn-floral {
+    margin: 18px 0;
+}
+
+/* 当头像为图片时，确保图片充满圆形容器 */
+#userAvatar img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+#userActionBtns {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    padding-top: .4rem;
+}
+
+.user-actions {
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+    flex: 1 1 auto;
+}
+
+/* 未登录时将按钮在垂直方向居中 */
+.user-actions.centered {
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    /* 增大未登录时两个按钮的垂直间距 */
+}
+
+.user-actions.centered .action-card.small {
+    width: 80%;
+}
+
+.action-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1rem;
+    border-radius: .8rem;
+    background: linear-gradient(135deg, #d5f3c2, #f4cbb2);
+    border: 1px solid rgba(90, 143, 123, 0.12);
+    color: #2e5b4b;
+    text-decoration: none;
+    box-shadow: 0 4px 10px rgba(75, 125, 95, 0.06);
+    transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+    margin-top: 1rem;
+}
+
+.action-card .icon {
+    font-size: 1.3rem;
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: .6rem;
+    background: linear-gradient(180deg, #e8f5e9, #ffffff);
+    border: 1px solid rgba(90, 143, 123, 0.08);
+}
+
+.action-card .label {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.action-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 22px rgba(75, 125, 95, 0.12);
+    background: linear-gradient(180deg, #ffffff, #f0fff4);
+}
+
+/* 登录/未登录的小尺寸卡片（不占满剩余高度） */
+.action-card.small {
+    flex: 0 0 auto;
+    padding: .45rem .6rem;
+}
+
+/* 微调：缩小右侧三个快捷入口尺寸（用户要求） */
+.action-card {
+    padding: .75rem .8rem;
+}
+.action-card .icon {
+    width: 34px;
+    height: 34px;
+    font-size: 1.1rem;
+}
+.action-card .label {
+    font-size: .95rem;
+}
+
+/* 当季热卖（复用 list.css 卡片样式的精简版） */
+.seasonal-sale,
+.popular-sale,
+.recommended-sale {
+    margin-top: 1.4rem;
+    padding: 1rem 0;
+}
+.seasonal-sale .title-row,
+.popular-sale .title-row,
+.recommended-sale .title-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.8rem;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 6px;
+}
+.seasonal-sale .title-row h2,
+.popular-sale .title-row h2,
+.recommended-sale .title-row h2 {
+    font-size: 1.8rem;
+    color: #25473c;
+    margin: 0;
+}
+.seasonal-sale .title-row .more-link,
+.popular-sale .title-row .more-link,
+.recommended-sale .title-row .more-link {
+    color: #3a725e;
+    text-decoration: none;
+    font-size: .95rem;
+}
+.season-grid {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem;
+    padding: 0 6px;
+}
+.season-grid .card {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 18px rgba(95, 143, 123, 0.10);
+    transition: .25s;
+    display: flex;
+    flex-direction: column;
+}
+.season-grid .card:hover { transform: translateY(-6px); }
+.season-grid .card img { width: 100%; height: 140px; object-fit: cover; display: block; }
+.season-grid .card-body { padding: 10px; display: flex; flex-direction: column; flex: 1 1 auto; }
+.season-grid .card-title { font-size: 1rem; font-weight: 600; color: #2e5b4b; margin-bottom: .4rem; }
+.season-grid .card-text { font-size: .9rem; color: #777; flex-grow: 1; }
+.season-grid .card-price { display: flex; align-items: center; justify-content: space-between; margin-top: .8rem; }
+.season-grid .price { font-size: 1.05rem; color: var(--leaf); font-weight: 700; }
+.season-grid .btn-detail { background: linear-gradient(135deg, var(--mint), var(--blush)); color: #25473c; border: none; padding: 6px 12px; border-radius: 14px; cursor: pointer; }
+
+@media (max-width: 1100px) {
+    .season-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 720px) {
+    .season-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+    .season-grid { grid-auto-flow: column; grid-auto-columns: 80%; overflow-x: auto; display: grid; grid-template-columns: none; gap: .8rem; }
+}
+
+@media (max-width: 900px) {
+    #userActionBtns {
+        padding-top: .2rem;
+    }
+}

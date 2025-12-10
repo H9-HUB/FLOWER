@@ -17,15 +17,16 @@ public class UserController {
 
     private final UserService userService;
 
+
     @PostMapping("/register")
     public R<Long> register(@Valid @RequestBody RegisterDTO dto) {
-        Long id = userService.register(dto.getPhone(), dto.getPassword());
+        Long id = userService.register(dto.getPhone(), dto.getUsername(), dto.getPassword());
         return R.ok(id);
     }
 
     @PostMapping("/login")
     public R<String> login(@Valid @RequestBody LoginDTO dto) {
-        String token = userService.login(dto.getPhone(), dto.getPassword());
+        String token = userService.login(dto.getPhone(), dto.getUsername(), dto.getPassword());
         return R.ok(token);
     }
 

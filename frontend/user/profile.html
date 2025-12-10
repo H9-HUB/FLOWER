@@ -14,11 +14,11 @@
     <div class="profile-shell">
         <section class="profile-hero glass">
             <div class="profile-meta">
-                <div class="profile-avatar">
-                    <img src="upload/logo.png" alt="avatar">
+                <div class="profile-avatar" id="profileAvatar" style="background:#eee;color:#666;font-size:2.2rem;display:flex;align-items:center;justify-content:center;">
+                    <!-- 头像首字母/汉字由js注入 -->
                 </div>
                 <div>
-                    <div class="profile-hello">Hi, Floral Friend</div>
+                    <div class="profile-hello">Hi, <span id="username" style="color:inherit;font-weight:600"></span></div>
                     <div class="profile-phone">当前手机号：<span id="phone" class="text-muted"></span></div>
                     <div class="profile-hint">欢迎回来，保持登录享受会员权益与专属优惠</div>
                 </div>
@@ -114,32 +114,51 @@
             <a class="pill-btn primary" href="mailto:support@floraldreams.local">联系支持</a>
         </section>
     </div>
-    <script src="js/common.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('phone').textContent = localStorage.getItem('phone') || '-';
-            loadOrderStats();
-        });
+        <script src="js/common.js"></script>
+        <script>
+                        document.addEventListener('DOMContentLoaded', () => {
+                                const username = localStorage.getItem('username');
+                                const phone = localStorage.getItem('phone');
+                                // 用户名优先，无则手机号，无则默认
+                                const displayName = username || (phone ? phone : 'Floral Friend');
+                                document.getElementById('username').textContent = displayName;
+                                document.getElementById('phone').textContent = phone || '-';
+                                // 头像首字母/汉字
+                                const avatarEl = document.getElementById('profileAvatar');
+                                let firstChar = displayName.trim().charAt(0) || '?';
+                                avatarEl.textContent = firstChar;
+                                // 颜色自适应：取主色或随机柔和色
+                                const colorList = [
+                                    '#43a047','#66bb6a','#a5d6a7','#e8f5e9','#c8e6c9','#388e3c','#81c784','#b9f6ca','#ffffff','#e0f2f1'
+                                ];
+                                // 用用户名/手机号的unicode和做hash选色
+                                let hash = 0;
+                                for(let i=0;i<displayName.length;i++) hash = displayName.charCodeAt(i) + ((hash<<5)-hash);
+                                const color = colorList[Math.abs(hash)%colorList.length];
+                                avatarEl.style.background = color;
+                                avatarEl.style.color = (color==='#ffffff'||color==='#e8f5e9'||color==='#e0f2f1'||color==='#b9f6ca'||color==='#a5d6a7'||color==='#c8e6c9') ? '#388e3c' : '#fff';
+                                loadOrderStats();
+                        });
 
-        async function loadOrderStats(){
-            if(!requireAuth({ message: '请先登录后查看订单概览', waitConfirm: true })) return;
-            try {
-                const res = await httpGet('/api/orders');
-                if(res.code === 200 && Array.isArray(res.data)){
-                    const total = res.data.length;
-                    const paid = res.data.filter(o => o.status === 'PAID').length;
-                    document.getElementById('totalOrdersCount').textContent = total;
-                    document.getElementById('paidOrdersCount').textContent = paid;
-                } else {
+            async function loadOrderStats(){
+                if(!requireAuth({ message: '请先登录后查看订单概览', waitConfirm: true })) return;
+                try {
+                    const res = await httpGet('/api/orders');
+                    if(res.code === 200 && Array.isArray(res.data)){
+                        const total = res.data.length;
+                        const paid = res.data.filter(o => o.status === 'PAID').length;
+                        document.getElementById('totalOrdersCount').textContent = total;
+                        document.getElementById('paidOrdersCount').textContent = paid;
+                    } else {
+                        document.getElementById('totalOrdersCount').textContent = '--';
+                        document.getElementById('paidOrdersCount').textContent = '--';
+                    }
+                } catch (e) {
                     document.getElementById('totalOrdersCount').textContent = '--';
                     document.getElementById('paidOrdersCount').textContent = '--';
                 }
-            } catch (e) {
-                document.getElementById('totalOrdersCount').textContent = '--';
-                document.getElementById('paidOrdersCount').textContent = '--';
             }
-        }
-    </script>
+        </script>
 </body>
 
 </html>

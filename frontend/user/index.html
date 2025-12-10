@@ -11,65 +11,98 @@
 </head>
 
 <body>
-    <!-- 已移除导航栏，页面更简洁，与登录页一致风格 -->
-    <div>
-        <h1>Floral Dreams · 花之梦</h1>
-        <p class="lead">发现生活的美好瞬间</p>
-        <p class="sub">一束花，一段温柔时光</p>
-        <p class="tagline">把自然的芬芳带入日常，把优雅留在心间</p>
-        
-            <div class="promo">
-                <div class="line"><span class="icon">🌸</span><span class="accent">每日鲜采</span>｜从花田到你手中，时效保证</div>
-                <div class="line"><span class="icon">🎁</span><span class="accent">专属定制</span>｜生日、周年、开业花束，风格任选</div>
-                <div class="line"><span class="icon">🏠</span><span class="accent">花艺到家</span>｜轻松布置客厅与餐桌，氛围加分</div>
-                <div class="line"><span class="icon">✅</span><span class="accent">品质保证</span>｜优选花材，持久绽放更耐看</div>
-                <div class="line"><span class="icon">💌</span><span class="accent">用花表达心意</span>｜传递祝福、致谢与浪漫</div>
-                <div class="line"><span class="icon">🆕</span><span class="accent">每周上新</span>｜热门配色与季节限定不容错过</div>
-                <div class="line"><span class="icon">⚡</span><span class="accent">门店自提/极速达</span>｜当日送达，惊喜不迟到</div>
-                <div class="line"><span class="icon">💎</span><span class="accent">会员礼遇</span>｜积分回馈，专属折扣与节日礼物</div>
+    <!-- 导航栏由 js/common.js 注入 -->
+    <script src="js/common.js"></script>
+    <div class="index-main">
+        <!-- 左侧分类栏 -->
+        <aside class="index-categories">
+            <div class="cat-title">
+                <span style="font-size:1.3em;">&#9776;</span> 全部分类
             </div>
-        <button class="btn-floral" onclick="location.href='list.html'">
-            <div class="wrapper">
-                <p class="text">立即探索</p>
-                <div class="flower flower1">
-                    <div class="petal one"></div>
-                    <div class="petal two"></div>
-                    <div class="petal three"></div>
-                    <div class="petal four"></div>
-                </div>
-                <div class="flower flower2">
-                    <div class="petal one"></div>
-                    <div class="petal two"></div>
-                    <div class="petal three"></div>
-                    <div class="petal four"></div>
-                </div>
-                <div class="flower flower3">
-                    <div class="petal one"></div>
-                    <div class="petal two"></div>
-                    <div class="petal three"></div>
-                    <div class="petal four"></div>
-                </div>
-                <div class="flower flower4">
-                    <div class="petal one"></div>
-                    <div class="petal two"></div>
-                    <div class="petal three"></div>
-                    <div class="petal four"></div>
-                </div>
-                <div class="flower flower5">
-                    <div class="petal one"></div>
-                    <div class="petal two"></div>
-                    <div class="petal three"></div>
-                    <div class="petal four"></div>
-                </div>
-                <div class="flower flower6">
-                    <div class="petal one"></div>
-                    <div class="petal two"></div>
-                    <div class="petal three"></div>
-                    <div class="petal four"></div>
+            <ul id="categoryList"></ul>
+            <div class="cat-bottom">
+                <a href="list.html" class="btn-floral" style="display:block;">
+                    <div class="wrapper">
+                        <p class="text">去商城</p>
+                        <div class="flower flower1">
+                            <div class="petal one"></div>
+                            <div class="petal two"></div>
+                            <div class="petal three"></div>
+                            <div class="petal four"></div>
+                        </div>
+                        <div class="flower flower2">
+                            <div class="petal one"></div>
+                            <div class="petal two"></div>
+                            <div class="petal three"></div>
+                            <div class="petal four"></div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </aside>
+        <!-- 中间轮播宣传 -->
+        <main class="index-carousel">
+            <div class="carousel" id="carousel">
+                <div class="carousel-inner" id="carouselInner"></div>
+                <button id="carouselPrev" class="carousel-arrow carousel-arrow-left" aria-label="上一张"><svg width="22"
+                        height="22" viewBox="0 0 22 22">
+                        <circle cx="11" cy="11" r="11" fill="none" />
+                        <polyline points="14,6 9,11 14,16" fill="none" stroke="#388e3c" stroke-width="2.2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg></button>
+                <button id="carouselNext" class="carousel-arrow carousel-arrow-right" aria-label="下一张"><svg width="22"
+                        height="22" viewBox="0 0 22 22">
+                        <circle cx="11" cy="11" r="11" fill="none" />
+                        <polyline points="8,6 13,11 8,16" fill="none" stroke="#388e3c" stroke-width="2.2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg></button>
+                <div class="carousel-indicators" id="carouselIndicators"
+                    style="position:absolute;bottom:1.2rem;left:50%;transform:translateX(-50%);display:flex;gap:.5em;">
                 </div>
             </div>
-        </button>
+        </main>
+        <!-- 右侧用户信息 -->
+        <aside class="index-user">
+            <div id="userAvatar"></div>
+            <div id="userWelcome">Hi! 游客</div>
+            <div class="user-divider"></div>
+            <div id="userActionBtns"></div>
+        </aside>
     </div>
+    <!-- 当季热卖（宽度与 .index-main 一致，位于其下方） -->
+    <section class="seasonal-sale" aria-label="当季热卖">
+        <div class="title-row">
+            <h2>当季热卖</h2>
+            <a class="more-link" href="list.html">去商城逛逛 &raquo;</a>
+        </div>
+        <div class="season-grid" id="seasonGrid">
+            <!-- 占位：JS 将替换为后端数据 -->
+            <div class="card placeholder">加载中...</div>
+        </div>
+    </section>
+    <!-- 最受欢迎：同样宽度，动态渲染（与当季热卖同样样式） -->
+    <section class="popular-sale" aria-label="最受欢迎">
+        <div class="title-row">
+            <h2>最受欢迎</h2>
+            <a class="more-link" href="list.html">去商城逛逛 &raquo;</a>
+        </div>
+        <div class="season-grid" id="popularGrid">
+            <div class="card placeholder">加载中...</div>
+        </div>
+    </section>
+    <!-- 你推荐：按 id 1-5 拉取 -->
+    <section class="recommended-sale" aria-label="你推荐">
+        <div class="title-row">
+            <h2>为你推荐</h2>
+            <a class="more-link" href="list.html">去商城逛逛 &raquo;</a>
+        </div>
+        <div class="season-grid" id="recommendedGrid">
+            <div class="card placeholder">加载中...</div>
+        </div>
+    </section>
+    <!-- common.js 已提前引入 -->
+
+    <script src="js/index.js"></script>
 </body>
 
 </html>

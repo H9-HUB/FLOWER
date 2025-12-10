@@ -19,13 +19,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
+
     @Override
     @Transactional
-    public Long register(String phone, String rawPwd) {
+    public Long register(String phone, String username, String rawPwd) {
         if (lambdaQuery().eq(User::getPhone, phone).count() > 0)
             throw new RuntimeException("手机号已存在");
+        if (lambdaQuery().eq(User::getUsername, username).count() > 0)
+            throw new RuntimeException("用户名已存在");
         User u = new User();
         u.setPhone(phone);
+        u.setUsername(username);
         u.setPassword(passwordEncoder.encode(rawPwd));
         u.setRole(UserRole.USER);
         save(u);
@@ -33,10 +37,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     @Override
-    public String login(String phone, String rawPwd) {
-        User u = lambdaQuery().eq(User::getPhone, phone).one();
+    public String login(String phone, String username, String rawPwd) {
+        User u = lambdaQuery()
+                .eq(User::getPhone, phone)
+                .eq(User::getUsername, username)
+                .one();
         if (u == null || !passwordEncoder.matches(rawPwd, u.getPassword()))
-            throw new RuntimeException("手机号或密码错误");
+            throw new RuntimeException("手机号、用户名或密码错误");
         return jwtUtil.createToken(u.getId(), u.getRole());
     }
 }

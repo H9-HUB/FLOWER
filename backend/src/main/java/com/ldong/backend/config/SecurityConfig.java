@@ -52,6 +52,7 @@ public class SecurityConfig {
                     // 商品公开接口：列表与详情
                     "/api/flowers",
                     "/api/flower/**",
+                    "/api/categories",
                     // 业务接口临时开放，依赖控制器内 userId 校验
                     "/api/cart/**",
                     "/api/orders/**",

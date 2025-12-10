@@ -1,4 +1,6 @@
 const BASE = 'http://localhost:8080';   // 本地后端根地址
+// 将 BASE 暴露到 window，便于其它脚本构建绝对 URL
+if (typeof window !== 'undefined') window.BASE = BASE;
 
 // 统一 GET（增强容错：非 JSON/非 2xx 不抛错）
 async function httpGet(url) {
@@ -135,10 +137,10 @@ function logout() {
   location.href = 'login.html';
 }
 
+
 function renderNavbar() {
-  // 不在首页注入（首页为全屏展示）
+  // 首页也注入导航栏
   const path = location.pathname.toLowerCase();
-  if (path.endsWith('/index.html') || path.endsWith('/')) return;
 
   const links = [
     { href: 'index.html', text: '首页', key: 'index' },
@@ -332,3 +334,26 @@ if (typeof window !== 'undefined') {
   window.showAlert = showAlert;
   window.showConfirm = showConfirm;
 }
+
+// 全局图片加载失败回退：将所有加载失败的图片替换为站内占位图，避免大量 404
+;(function(){
+  if (typeof window === 'undefined') return;
+  window.addEventListener('error', function (e) {
+    try {
+      const el = e.target || e.srcElement;
+      if (!el) return;
+      if (el.tagName && el.tagName.toUpperCase() === 'IMG') {
+        // 避免无限循环替换
+        if (el.dataset && el.dataset._fallbackApplied) return;
+        // 优先使用常见占位资源
+        const fallback = 'upload/logo.png';
+        el.dataset._fallbackApplied = '1';
+        el.src = fallback;
+        // 移除可能的 srcset，避免再次加载错误资源
+        try { el.removeAttribute('srcset'); } catch (e) {}
+      }
+    } catch (err) {
+      // 安静失败，不阻塞页面
+    }
+  }, true);
+})();

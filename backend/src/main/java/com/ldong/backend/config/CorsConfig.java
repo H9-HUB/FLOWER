@@ -12,11 +12,12 @@ public class CorsConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/api/**")   // 只开放业务接口
+                registry.addMapping("/**")   // 开放所有业务与管理接口，避免跨域阻断
                         // 开发环境：放开所有来源，避免 file:// 或其它端口导致 401/跨域失败
                         .allowedOriginPatterns("*")
                         .allowedMethods("GET","POST","PUT","DELETE","OPTIONS")
                         .allowedHeaders("*")
+                        .exposedHeaders("Authorization","X-User-Id","X-User-Role")
                         .allowCredentials(true);
             }
         };

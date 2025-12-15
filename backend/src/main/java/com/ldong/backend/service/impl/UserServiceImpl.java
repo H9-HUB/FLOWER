@@ -46,4 +46,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             throw new RuntimeException("手机号、用户名或密码错误");
         return jwtUtil.createToken(u.getId(), u.getRole());
     }
+
+    @Override
+    public String adminLogin(String phone, String username, String rawPwd) {
+        User u = lambdaQuery()
+                .eq(User::getPhone, phone)
+                .eq(User::getUsername, username)
+                .one();
+        if (u == null || !passwordEncoder.matches(rawPwd, u.getPassword()))
+            throw new RuntimeException("手机号、用户名或密码错误");
+        if (u.getRole() != UserRole.ADMIN)
+            throw new RuntimeException("仅限管理员登录");
+        return jwtUtil.createToken(u.getId(), u.getRole());
+    }
 }

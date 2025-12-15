@@ -45,6 +45,8 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 // 允许所有预检请求，否则浏览器在跨域 PUT/DELETE 时会 401
                 .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
+                // 明确允许 admin 登录 POST
+                .requestMatchers(org.springframework.http.HttpMethod.POST, "/admin/login").permitAll()
                 .requestMatchers(
                     "/api/login",
                     "/api/register",

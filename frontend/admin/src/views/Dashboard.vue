@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, watch, nextTick } from 'vue'
+import { ref, onMounted, watch, nextTick, onUnmounted } from 'vue'
 import { Chart, ArcElement, Tooltip, Legend, PieController } from 'chart.js'
 import { getOverview } from '../api/dashboard'
 import type { StatOverview } from '../types'
@@ -21,6 +21,29 @@ const stats = ref<StatOverview>({
 })
 
 let chartInstance: Chart | null = null
+
+// 定时器：在本地时间过午夜时刷新日视图数据
+let midnightTimer: number | null = null
+
+function clearMidnightTimer() {
+  if (midnightTimer !== null) {
+    clearTimeout(midnightTimer)
+    midnightTimer = null
+  }
+}
+
+function scheduleMidnightRefresh() {
+  clearMidnightTimer()
+  if (dateType.value !== 'day') return
+  const now = new Date()
+  const nextMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1)
+  const ms = nextMidnight.getTime() - now.getTime()
+  midnightTimer = window.setTimeout(() => {
+    loadData()
+    // 递归调度，保证每个午夜都会触发
+    scheduleMidnightRefresh()
+  }, ms)
+}
 
 async function loadData() {
   try {
@@ -110,10 +133,20 @@ function renderChart() {
 
 onMounted(() => {
   loadData()
+  scheduleMidnightRefresh()
 })
 
 watch(dateType, () => {
   loadData()
+  scheduleMidnightRefresh()
+})
+
+onUnmounted(() => {
+  if (chartInstance) {
+    chartInstance.destroy()
+    chartInstance = null
+  }
+  clearMidnightTimer()
 })
 </script>
 

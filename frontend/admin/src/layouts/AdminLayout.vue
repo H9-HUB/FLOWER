@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import logo from '../assets/logo.png'
 import { useRouter, useRoute } from 'vue-router'
 import { storage } from '../utils/storage'
 
@@ -38,6 +39,7 @@ function isActive(path: string) {
     <aside class="sidebar" :class="{ collapsed }">
       <div class="sidebar-header">
         <div class="logo">
+          <img :src="logo" alt="Logo" class="logo-img" />
           <span v-if="!collapsed">Floral Admin</span>
           <span v-else>FA</span>
         </div>
@@ -59,7 +61,7 @@ function isActive(path: string) {
     <div class="main-container">
       <header class="header">
         <button class="toggle-btn" @click="toggleSidebar">
-          {{ collapsed ? '☰' : '✕' }}
+          {{ collapsed ? '👉' : '👈' }}
         </button>
         <div class="header-right">
           <span class="user-name">Hello, {{ userInfo?.username }}</span>
@@ -107,13 +109,23 @@ function isActive(path: string) {
 }
 
 .logo {
-  font-size: 20px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 24px;
   font-weight: 600;
   color: var(--color-primary);
 }
 
+.logo-img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
 .sidebar-menu {
   padding: var(--spacing-md) 0;
+  font-size: 16px;
 }
 
 .menu-item {

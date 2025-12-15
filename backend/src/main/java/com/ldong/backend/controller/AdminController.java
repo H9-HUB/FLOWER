@@ -6,12 +6,17 @@ import com.ldong.backend.entity.*;
 import com.ldong.backend.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.Authentication;
@@ -30,6 +35,36 @@ public class AdminController {
     private final CartService cartService;
     private final AddressService addressService;
     private final org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
+
+    /** 图片上传：保存到 resources/static/upload 下，并返回访问路径 /upload/xxx */
+    @PostMapping("/upload")
+    public R<Map<String, String>> upload(@RequestParam("file") MultipartFile file) {
+        if (file.isEmpty()) {
+            return R.error("文件不能为空");
+        }
+        try {
+            String original = Objects.requireNonNull(file.getOriginalFilename());
+            String ext = "";
+            int dot = original.lastIndexOf(".");
+            if (dot >= 0) {
+                ext = original.substring(dot);
+            }
+            String filename = System.currentTimeMillis() + "-" + UUID.randomUUID().toString().replace("-", "") + ext;
+
+            // 保存到项目的 backend/src/main/resources/static/upload 文件夹（你要求保存在此处）
+            Path uploadDir = Paths.get(System.getProperty("user.dir"), "backend", "src", "main", "resources", "static", "upload");
+            if (!Files.exists(uploadDir)) {
+                Files.createDirectories(uploadDir);
+            }
+            Path target = uploadDir.resolve(filename);
+            Files.copy(file.getInputStream(), target, StandardCopyOption.REPLACE_EXISTING);
+            Map<String, String> data = new HashMap<>();
+            data.put("url", "/upload/" + filename);
+            return R.ok(data);
+        } catch (Exception e) {
+            return R.error("上传失败: " + e.getMessage());
+        }
+    }
 
     /** 仪表盘统计: /admin/stat/overview?dateType=day|week|month */
     @GetMapping("/stat/overview")
@@ -184,14 +219,18 @@ public class AdminController {
         }
         flower.setStock(Integer.valueOf(body.get("stock").toString()));
         
+        // 图片必填
+        String image = (String) body.get("image");
+        if (image == null || image.trim().isEmpty()) {
+            return R.error("商品图片不能为空");
+        }
+
         // 状态转换：on -> ON_SALE, off -> OFF_SALE，默认为 ON_SALE
         String status = (String) body.getOrDefault("status", "on");
         flower.setStatus("on".equals(status) ? "ON_SALE" : "OFF_SALE");
         
         flower.setDescription((String) body.getOrDefault("description", ""));
-        if (body.containsKey("image") && body.get("image") != null) {
-            flower.setMainImg((String) body.get("image"));
-        }
+        flower.setMainImg(image.trim());
         
         flowerService.save(flower);
         return R.ok(flower.getId());
@@ -224,7 +263,10 @@ public class AdminController {
             flower.setDescription((String) body.get("description"));
         }
         if (body.containsKey("image")) {
-            flower.setMainImg((String) body.get("image"));
+            String image = (String) body.get("image");
+            if (image != null && !image.trim().isEmpty()) {
+                flower.setMainImg(image.trim());
+            }
         }
         
         flowerService.updateById(flower);

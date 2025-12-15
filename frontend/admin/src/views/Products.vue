@@ -5,7 +5,8 @@ import {
   addProduct,
   updateProduct,
   deleteProduct,
-  updateProductStatus
+  updateProductStatus,
+  uploadProductImage
 } from '../api/product'
 import { getCategoryList } from '../api/category'
 import type { Product, Category } from '../types'
@@ -20,6 +21,7 @@ const keyword = ref('')
 const showModal = ref(false)
 const editingProduct = ref<Partial<Product>>({})
 const isEdit = ref(false)
+const selectedFile = ref<File | null>(null)
 
 async function loadProducts() {
   try {
@@ -65,15 +67,28 @@ function handleAdd() {
     price: 0,
     stock: 0,
     status: 'on',
-    description: ''
+    description: '',
+    image: ''
   }
+  selectedFile.value = null
   showModal.value = true
 }
 
 function handleEdit(product: Product) {
   isEdit.value = true
   editingProduct.value = { ...product }
+  selectedFile.value = null
   showModal.value = true
+}
+
+function handleFileChange(event: Event) {
+  const target = event.target as HTMLInputElement
+  const files = target.files
+  if (files && files.length > 0) {
+    selectedFile.value = files[0]
+  } else {
+    selectedFile.value = null
+  }
 }
 
 async function handleDelete(id: number) {
@@ -97,6 +112,21 @@ async function handleSave() {
   }
 
   try {
+    // 如果有新选择的图片，先上传图片，获取路径
+    if (selectedFile.value) {
+      const uploadRes = await uploadProductImage(selectedFile.value) as any
+      if (uploadRes && uploadRes.data && uploadRes.data.url) {
+        editingProduct.value.image = uploadRes.data.url
+      } else {
+        alert('图片上传失败')
+        return
+      }
+    } else if (!editingProduct.value.image) {
+      // 新增时必须有图片
+      alert('请上传商品图片')
+      return
+    }
+
     if (isEdit.value && editingProduct.value.id) {
       await updateProduct(editingProduct.value.id, editingProduct.value)
       alert('更新成功')
@@ -239,6 +269,14 @@ onMounted(() => {
             <label class="form-label">库存</label>
             <input v-model.number="editingProduct.stock" type="number" class="form-input" />
           </div>
+
+        <div class="form-group">
+          <label class="form-label">商品图片（必填）</label>
+          <input type="file" accept="image/*" class="form-input" @change="handleFileChange" />
+          <div v-if="editingProduct.image" class="image-preview">
+            <span>当前图片路径：{{ editingProduct.image }}</span>
+          </div>
+        </div>
 
           <div class="form-group">
             <label class="form-label">状态</label>

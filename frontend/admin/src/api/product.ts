@@ -24,3 +24,11 @@ export function updateProductStatus(id: number, status: 'on' | 'off') {
 export function batchUpdateStatus(categoryId: number, status: 'on' | 'off') {
   return request.put<ApiResponse>('/admin/product/batch/status', { categoryId, status })
 }
+
+export function uploadProductImage(file: File) {
+  const formData = new FormData()
+  formData.append('file', file)
+  return request.post<ApiResponse<{ url: string }>>('/admin/upload', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  })
+}

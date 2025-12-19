@@ -169,7 +169,7 @@ function renderNavbar() {
   const brand = `
     <a class="app-brand" href="list.html" aria-label="Floral Dreams 首页">
       <span class="brand-logo" aria-hidden="true">
-        <img src="upload/logo.png" alt="Logo" width="30" height="30">
+        <img src="upload/logo.png" alt="Logo" width="40" height="40">
       </span>
       <span class="app-logo">Floral Dreams</span>
     </a>`;

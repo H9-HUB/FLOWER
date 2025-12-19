@@ -8,6 +8,76 @@
     <link href="css/style.css" rel="stylesheet">
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/login.css" rel="stylesheet">
+        <!-- 字体：Great Vibes（英文）从 Google Fonts，中文字体阿里妈妈东方大楷请放在 user/fonts/ 目录并命名为 AlibabaDongFangDaKai.woff2 -->
+        <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+        <style>
+            @font-face {
+                font-family: 'AlimamaDaoLiTi';
+                src: url('fonts/AlimamaDaoLiTi.woff2') format('woff2');
+                font-weight: normal;
+                font-style: normal;
+                font-display: swap;
+            }
+
+            /* 全局：中文使用 AlimamaDaoLiTi；整体放大基础字号 */
+            body {
+                font-family: 'AlimamaDaoLiTi', 'Noto Serif SC', serif;
+                font-size: 20px; /* 基础字号，从默认放大（原通常为16px） */
+                line-height: 1.6;
+            }
+
+            /* 英文文本使用 Great Vibes（若需要强制英文使用，可在英文元素上添加 .en） */
+            .en {
+                font-family: 'Great Vibes', cursive;
+            }
+
+            /* 店铺招牌 / 海报主标题 */
+            .brand {
+                display: flex;
+                align-items: baseline;
+                gap: 0.5rem;
+            }
+
+            .brand-en {
+                font-family: 'Great Vibes', cursive;
+                font-size: 2.6rem;
+                line-height: 1;
+            }
+
+            .brand-zh {
+                font-family: 'AlimamaDaoLiTi', 'Noto Serif SC', serif;
+                font-size: 1.9rem;
+                line-height: 1;
+                color: #333;
+            }
+
+            /* 小的分隔点样式 */
+            .brand-sep {
+                color: rgba(0,0,0,0.45);
+                font-size: 1.2rem;
+            }
+            /* 其他关键文本放大 */
+            .welcome, .welcome-cn, .slogan {
+                font-size: 1.8rem;
+            }
+
+            .title {
+                font-size: 2rem;
+                font-weight: 600;
+            }
+
+            .input-container input, .input-container label {
+                font-size: 1.6rem;
+            }
+
+            .btn-floral .text {
+                font-size: 1.2rem;
+            }
+
+            .toggle .link, .text-center a.text-muted {
+                font-size: 1.1rem;
+            }
+        </style>
 </head>
 
 <body class="page-login">
@@ -15,8 +85,8 @@
     <div class="login-shell">
         <div class="pane-left">
             <div class="pane-left-inner">
-                <div class="brand">Floral Dreams · 花之梦</div>
-                <div class="welcome">Welcome to Floral Dream</div>
+                <div class="brand"><span class="brand-en">Floral Dreams</span><span class="brand-sep">·</span><span class="brand-zh">花之梦</span></div>
+                <div class="welcome"><span class="en">Welcome to Floral Dream</span></div>
                 <div class="welcome-cn">欢迎来到 —— 花之梦</div>
                 <div class="slogan">让一束花的温柔，为生活添上一抹优雅。</div>
             </div>

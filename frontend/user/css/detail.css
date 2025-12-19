@@ -8,7 +8,6 @@
     /* legacy */
     --radius: 16px;
     --shadow: 0 6px 18px rgba(95, 143, 123, .12);
-    --font: 'Poppins', sans-serif;
 }
 
 body {
@@ -18,9 +17,9 @@ body {
 
 .product-card {
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 2rem auto;
     /* 居中 */
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(245, 249, 240, 0.9);
     border-radius: var(--radius);
     border: 1px solid rgba(90, 143, 123, 0.18);
     box-shadow: var(--shadow);
@@ -85,7 +84,7 @@ h1 {
 
 .product-info #desc {
     margin-bottom: 1.5rem;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
 }
 
 .product-info .price-row {
@@ -109,9 +108,14 @@ h1 {
 }
 
 .price {
-    font-size: 2rem;
+    font-size: 2.2rem;
     color: #3a725e;
     font-weight: 700;
+}
+
+/* 库存文字放大到 1.6rem */
+.price-row .badge {
+    font-size: 1.6rem;
 }
 
 .qty-row {
@@ -168,8 +172,8 @@ img#mainImg {
 
 /* Uiverse CartBtn adapted to floral theme */
 .CartBtn {
-    width: 136px;
-    height: 42px;
+    width: 160px;
+    height: 50px;
     border-radius: 14px;
     border: 1px solid rgba(90, 143, 123, 0.25);
     background: linear-gradient(135deg, var(--mint), var(--blush));
@@ -182,6 +186,7 @@ img#mainImg {
     box-shadow: 0 6px 18px rgba(95, 143, 123, 0.10);
     position: relative;
     color: #25473c;
+    margin-top: 20px;
 }
 
 .IconContainer {
@@ -209,6 +214,12 @@ img#mainImg {
     font-size: 1.02em;
     font-weight: 600;
     transition: transform .4s ease;
+}
+
+/* 购买按钮文字使用 AlimamaDaoLiTi（中文） */
+.CartBtn .text, .CartBtn p.text {
+    font-family: 'AlimamaDaoLiTi', var(--font);
+    font-size: 1.2rem;
 }
 
 .CartBtn:hover .IconContainer {
@@ -257,7 +268,7 @@ img#mainImg {
     top: 50%;
     transform: translateY(-50%);
     padding: .25rem .5rem;
-    font-size: .875rem;
+    font-size: 1.2rem;
     border: 1px solid #6c757d;
     color: #6c7d76;
     text-decoration: none;

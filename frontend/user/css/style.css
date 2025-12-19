@@ -1,9 +1,30 @@
 /* Alert/Confirm modal styles unified with site theme */
 :root{
   --primary: #ff7f50;
+  --font: 'AlimamaDaoLiTi', 'GreatVibes', "Segoe UI", system-ui, -apple-system, "PingFang SC", "Microsoft Yahei", sans-serif;
   --text-strong: #2b2d31;
   --text: #50545a;
   --shadow-primary: rgba(255,127,80,.25);
+}
+/* 字体声明：中文使用 AlimamaDaoLiTi（本地），英文字体使用 GreatVibes（本地）
+   使用 unicode-range 限定字体覆盖范围，以便自动按字符集选择字体 */
+@font-face {
+  font-family: 'AlimamaDaoLiTi';
+  src: url('../fonts/AlimamaDaoLiTi.woff2') format('woff2'), url('../fonts/AlimamaDaoLiTi.woff') format('woff'), url('../fonts/AlimamaDaoLiTi.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+  /* 常用中日韩统一表意文字范围，覆盖中文字符 */
+  unicode-range: U+4E00-9FFF, U+3400-4DBF, U+20000-2A6DF, U+2A700-2B73F, U+2B740-2B81F, U+2B820-2CEAF;
+}
+@font-face {
+  font-family: 'GreatVibes';
+  src: url('../fonts/GreatVibes-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+  /* 拉丁字母及常见标点 */
+  unicode-range: U+0000-00FF, U+0100-017F, U+0180-024F, U+1E00-1EFF;
 }
 .app-alert-mask{
   position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
@@ -19,6 +40,7 @@
 .app-alert-title .app-alert-icon{ display:none; width: 28px; height: 28px; margin-right: 8px; vertical-align: -6px; border-radius: 6px; }
 .app-alert-box.app-auth .app-alert-title .app-alert-icon{ display:inline-block; }
 .app-alert-msg{ color: var(--text); line-height: 1.6; word-break: break-word; margin-bottom: 14px; }
+.app-alert-msg{ font-size: 1.3rem; }
 .app-alert-actions{ display: flex; gap: 10px; justify-content: flex-end; }
 .app-btn{ border: none; border-radius: 999px; padding: 6px 14px; cursor: pointer; }
 .app-btn-sm{ font-size: .875rem; }
@@ -97,7 +119,7 @@ body.page-address #addrModal .btn-primary{
 }
 
 body {
-  font-family: "Segoe UI", system-ui, -apple-system, "PingFang SC", "Microsoft Yahei", sans-serif;
+  font-family: var(--font);
   color: var(--text);
   background:
     linear-gradient(135deg, rgba(253, 253, 252, 0.92), rgba(245, 251, 247, 0.92));
@@ -189,13 +211,14 @@ a:hover { color: #25473c; text-decoration: none; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 16px;
+  padding: 12px 18px;
   font-family: var(--font);
+  font-size: 1.4rem; /* 增大导航整体字体 */
 }
 
 .app-brand { display:flex; align-items:center; gap:12px; text-decoration:none; }
-.brand-logo { display:inline-flex; width:26px; height:26px; }
-.app-logo { font-weight:700; color: var(--leaf); text-decoration:none; font-size:1.8rem; }
+.brand-logo { display:inline-flex; width:40px; height:44px; }
+.app-logo { font-weight:700; color: var(--leaf); text-decoration:none; font-size:2.6rem; }
 
 .app-links {
   display: flex;
@@ -208,7 +231,7 @@ a:hover { color: #25473c; text-decoration: none; }
 /* Navbar search */
 .app-search { display:flex; }
 .app-search input {
-  width: 100%; max-width: 360px; height: 36px;
+  width: 100%; max-width: 360px; height: 40px;
   background: rgba(255,255,255,0.86);
   border: 1px solid rgba(90, 143, 123, 0.25);
   border-radius: 999px;
@@ -226,6 +249,7 @@ a:hover { color: #25473c; text-decoration: none; }
   text-decoration: none;
   padding: 6px 10px;
   border-radius: 10px;
+  font-size: 1.3rem; /* 增大链接字号以匹配导航 */
 }
 
 .app-link:hover {

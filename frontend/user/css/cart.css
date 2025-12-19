@@ -9,6 +9,11 @@
     gap: 1rem;
 }
 
+/* Cart page: 使用本地字体，中文 AlimamaDaoLiTi、英文 GreatVibes，并适当放大基准字号 */
+.container {
+    font-family: 'AlimamaDaoLiTi', 'GreatVibes', var(--font);
+}
+
 .card-item img {
     width: 100px;
     height: 100px;
@@ -19,14 +24,18 @@
 .info {
     flex: 1;
 }
-
 .info .name {
-    font-weight: 500;
+    font-weight: 600;
+    font-size: 1.7rem; /* 适当放大商品名 */
+    margin-left: 20px;
 }
 
 .info .price {
     color: #e4393c;
-    font-size: 1.1rem;
+    font-size: 1.5rem; /* 放大价格显示 */
+    font-weight: 700;
+    margin-left: 20px;
+    margin-top: 10px;
 }
 
 .qty-ctrl {
@@ -42,6 +51,7 @@
     background: #fff;
     border-radius: 4px;
     cursor: pointer;
+    font-weight: 600;
 }
 
 .qty-ctrl input {
@@ -63,4 +73,11 @@
 .total-bar {
     text-align: right;
     margin-top: 1rem;
+}
+
+/* 放大购物车页面合计行文字 */
+.container .text-end h5,
+.total-bar h5 {
+    font-size: 1.6rem;
+    font-weight: 700;
 }

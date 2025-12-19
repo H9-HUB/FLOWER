@@ -13,7 +13,7 @@
 }
 
 body {
-    font-family: "Segoe UI", system-ui, -apple-system, "PingFang SC", "Microsoft Yahei", sans-serif;
+    font-family: var(--font);
     background:
         linear-gradient(135deg, rgba(253, 253, 252, 0.9), rgba(245, 251, 247, 0.9));
     /* 背景图 + 柔和遮罩 */
@@ -43,8 +43,8 @@ body {
 
 .index-categories .cat-title {
     font-weight: 600;
-    font-size: 1.1rem;
-    margin-bottom: 1rem;
+    font-size: 1.6rem;
+    margin-bottom: .5rem;
     display: flex;
     align-items: center;
     gap: .5em;
@@ -56,8 +56,14 @@ body {
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: .7em;
+    gap: .1em;
+    font-size: 1.2rem;
 }
+    /* 分类列表项使用 AlimamaDaoLiTi 字体 */
+    .index-categories #categoryList li,
+    .index-categories #categoryList li span {
+        font-family: 'AlimamaDaoLiTi', var(--font);
+    }
 
 .index-carousel {
     flex: 1;
@@ -111,13 +117,13 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2.2rem;
+    font-size: 2.5rem;
     font-weight: 600;
-    margin-bottom: .7em;
+    margin-bottom: .3em;
 }
 
 #userWelcome {
-    font-size: 1.7rem;
+    font-size: 2rem;
     font-weight: 500;
     margin-bottom: .5em;
 }
@@ -128,7 +134,7 @@ body {
     color: #2f5f4e;
     padding: .6rem .9rem;
     border-radius: 12px;
-    font-size: .98rem;
+    font-size: .1rem;
     box-shadow: 0 4px 14px rgba(95, 143, 123, 0.08);
     display: flex;
     align-items: center;
@@ -642,7 +648,7 @@ body {
     font-size: 1.1rem;
 }
 .action-card .label {
-    font-size: .95rem;
+    font-size: 1.2rem;
 }
 
 /* 当季热卖（复用 list.css 卡片样式的精简版） */
@@ -668,7 +674,7 @@ body {
 .seasonal-sale .title-row h2,
 .popular-sale .title-row h2,
 .recommended-sale .title-row h2 {
-    font-size: 1.8rem;
+    font-size: 2rem;
     color: #25473c;
     margin: 0;
 }
@@ -677,7 +683,7 @@ body {
 .recommended-sale .title-row .more-link {
     color: #3a725e;
     text-decoration: none;
-    font-size: .95rem;
+    font-size: 1.1rem;
 }
 .season-grid {
     max-width: 1200px;
@@ -700,10 +706,10 @@ body {
 .season-grid .card:hover { transform: translateY(-6px); }
 .season-grid .card img { width: 100%; height: 140px; object-fit: cover; display: block; }
 .season-grid .card-body { padding: 10px; display: flex; flex-direction: column; flex: 1 1 auto; }
-.season-grid .card-title { font-size: 1rem; font-weight: 600; color: #2e5b4b; margin-bottom: .4rem; }
-.season-grid .card-text { font-size: .9rem; color: #777; flex-grow: 1; }
+.season-grid .card-title { font-size: 1.4rem; font-weight: 600; color: #2e5b4b; margin-bottom: .4rem; }
+.season-grid .card-text { font-size: 1rem; color: #777; flex-grow: 1; }
 .season-grid .card-price { display: flex; align-items: center; justify-content: space-between; margin-top: .8rem; }
-.season-grid .price { font-size: 1.05rem; color: var(--leaf); font-weight: 700; }
+.season-grid .price { font-size: 1.8rem; color: var(--leaf); font-weight: 700; }
 .season-grid .btn-detail { background: linear-gradient(135deg, var(--mint), var(--blush)); color: #25473c; border: none; padding: 6px 12px; border-radius: 14px; cursor: pointer; }
 
 @media (max-width: 1100px) {

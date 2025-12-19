@@ -19,7 +19,6 @@
     --light: #f8f8f8;
     --radius: 12px;
     --shadow: 0 8px 20px rgba(0, 0, 0, .15);
-    --font: 'Poppins', sans-serif;
 }
 
 body {
@@ -76,6 +75,12 @@ body {
     display: grid;
     place-items: center;
     font-size: .7rem;
+}
+
+/* 分类栏按钮使用 AlimamaDaoLiTi 字体 */
+#categoryBar button {
+    font-family: 'AlimamaDaoLiTi', var(--font);
+    font-size: 1.1rem;
 }
 
 .btn-sign {
@@ -141,13 +146,13 @@ body {
 }
 
 .card-title {
-    font-size: 1.1rem;
-    font-weight: 500;
-    margin-bottom: .5rem;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: .4rem;
 }
 
 .card-text {
-    font-size: .9rem;
+    font-size: 1rem;
     color: #777;
     flex-grow: 1;
 }
@@ -160,8 +165,8 @@ body {
 }
 
 .price {
-    font-size: 1.3rem;
-    color: var(--primary);
+    font-size: 1.8rem;
+    color: var(--leaf);
     font-weight: 700;
 }
 

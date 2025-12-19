@@ -21,7 +21,6 @@ public class AdminAuthController {
 
     private final UserService userService;
     private final JwtUtil jwtUtil;
-
     @PostMapping("/login")
     public R<Map<String, Object>> login(@Valid @RequestBody LoginDTO dto, HttpServletResponse response) {
         String token;
